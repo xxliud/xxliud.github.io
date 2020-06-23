@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://xxliud.github.io</id>
     <title>Zcbb - Workspace</title>
-    <updated>2020-06-23T12:48:49.302Z</updated>
+    <updated>2020-06-23T12:57:52.655Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://xxliud.github.io"/>
     <link rel="self" href="https://xxliud.github.io/atom.xml"/>
@@ -11,13 +11,25 @@
     <icon>https://xxliud.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, Zcbb - Workspace</rights>
     <entry>
+        <title type="html"><![CDATA[K8s - 学习资料汇总]]></title>
+        <id>https://xxliud.github.io/post/k8s/</id>
+        <link href="https://xxliud.github.io/post/k8s/">
+        </link>
+        <updated>2020-06-23T12:52:02.000Z</updated>
+        <content type="html"><![CDATA[<figure data-type="image" tabindex="1"><img src="https://xxliud.github.io/post-images/1592916780146.jpeg" alt="" loading="lazy"></figure>
+]]></content>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[我们与ELK的距离]]></title>
         <id>https://xxliud.github.io/post/docker-elk/</id>
         <link href="https://xxliud.github.io/post/docker-elk/">
         </link>
         <updated>2020-06-23T12:24:26.000Z</updated>
-        <content type="html"><![CDATA[<p><img src="https://xxliud.github.io/post-images/1592915083405.jpg" alt="" loading="lazy"><br>
-ELK是Elasticsearch、Logstash、Kibana三大开源框架首字母大写简称。市面上也被成为Elastic Stack。其中Elasticsearch是一个基于Lucene、分布式、通过Restful方式进行交互的近实时搜索平台框架。像类似百度、谷歌这种大数据全文搜索引擎的场景都可以使用Elasticsearch作为底层支持框架，可见Elasticsearch提供的搜索能力确实强大,市面上很多时候我们简称Elasticsearch为es。Logstash是ELK的中央数据流引擎，用于从不同目标（文件/数据存储/MQ）收集的不同格式数据，经过过滤后支持输出到不同目的地（文件/MQ/redis/elasticsearch/kafka等）。Kibana可以将elasticsearch的数据通过友好的页面展示出来，提供实时分析的功能。</p>
+        <content type="html"><![CDATA[<figure data-type="image" tabindex="1"><img src="https://xxliud.github.io/post-images/1592915083405.jpg" alt="" loading="lazy"></figure>
+<h2 id="背景">背景</h2>
+<p>对ELK的了解一直都停留在高大上的感觉，公司有专门的部分搞，也曾经在19年1月份的时候，利用过年闲暇时间尝试搭建，但是失败了，回想发现如果当时不是走捷径直接拉取elk的组合镜像包，可能早就成功了，还是那句话，什么都没有捷径...</p>
+<h2 id="搭建过程">搭建过程</h2>
+<p>ELK是Elasticsearch、Logstash、Kibana三大开源框架首字母大写简称。市面上也被成为Elastic Stack。其中Elasticsearch是一个基于Lucene、分布式、通过Restful方式进行交互的近实时搜索平台框架。像类似百度、谷歌这种大数据全文搜索引擎的场景都可以使用Elasticsearch作为底层支持框架，可见Elasticsearch提供的搜索能力确实强大,市面上很多时候我们简称Elasticsearch为es。Logstash是ELK的中央数据流引擎，用于从不同目标（文件/数据存储/MQ）收集的不同格式数据，经过过滤后支持输出到不同目的地（文件/MQ/redis/elasticsearch/kafka等）。Kibana可以将elasticsearch的数据通过友好的页面展示出来，提供实时分析的功能。</p>
 <p>下面简单介绍一下docker下如何搭建elk平台</p>
 <p>我们的架构图：<br>
 <img src="https://xxliud.github.io/post-images/1592915101615.png" alt="" loading="lazy"></p>
