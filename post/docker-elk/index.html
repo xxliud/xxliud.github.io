@@ -7,7 +7,7 @@
 <meta name="description" content="念念不忘，必有回响">
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<link rel="shortcut icon" href="https://xxliud.github.io/favicon.ico?v=1592917070127">
+<link rel="shortcut icon" href="https://xxliud.github.io/favicon.ico?v=1592917153261">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 <link rel="stylesheet" href="https://unpkg.com/papercss@1.6.1/dist/paper.min.css" />
@@ -98,11 +98,11 @@
               <img src="https://xxliud.github.io/post-images/docker-elk.jpg" alt="我们与ELK的距离">
             
             <div class="post-content">
-              <figure data-type="image" tabindex="1"><img src="https://xxliud.github.io/post-images/1592915083405.jpg" alt="" loading="lazy"></figure>
-<h2 id="背景">背景</h2>
+              <h2 id="背景">背景</h2>
 <p>对ELK的了解一直都停留在高大上的感觉，公司有专门的部分搞，也曾经在19年1月份的时候，利用过年闲暇时间尝试搭建，但是失败了，回想发现如果当时不是走捷径直接拉取elk的组合镜像包，可能早就成功了，还是那句话，什么都没有捷径...</p>
 <h2 id="搭建过程">搭建过程</h2>
-<p>ELK是Elasticsearch、Logstash、Kibana三大开源框架首字母大写简称。市面上也被成为Elastic Stack。其中Elasticsearch是一个基于Lucene、分布式、通过Restful方式进行交互的近实时搜索平台框架。像类似百度、谷歌这种大数据全文搜索引擎的场景都可以使用Elasticsearch作为底层支持框架，可见Elasticsearch提供的搜索能力确实强大,市面上很多时候我们简称Elasticsearch为es。Logstash是ELK的中央数据流引擎，用于从不同目标（文件/数据存储/MQ）收集的不同格式数据，经过过滤后支持输出到不同目的地（文件/MQ/redis/elasticsearch/kafka等）。Kibana可以将elasticsearch的数据通过友好的页面展示出来，提供实时分析的功能。</p>
+<p><img src="https://xxliud.github.io/post-images/1592915083405.jpg" alt="" loading="lazy"><br>
+ELK是Elasticsearch、Logstash、Kibana三大开源框架首字母大写简称。市面上也被成为Elastic Stack。其中Elasticsearch是一个基于Lucene、分布式、通过Restful方式进行交互的近实时搜索平台框架。像类似百度、谷歌这种大数据全文搜索引擎的场景都可以使用Elasticsearch作为底层支持框架，可见Elasticsearch提供的搜索能力确实强大,市面上很多时候我们简称Elasticsearch为es。Logstash是ELK的中央数据流引擎，用于从不同目标（文件/数据存储/MQ）收集的不同格式数据，经过过滤后支持输出到不同目的地（文件/MQ/redis/elasticsearch/kafka等）。Kibana可以将elasticsearch的数据通过友好的页面展示出来，提供实时分析的功能。</p>
 <p>下面简单介绍一下docker下如何搭建elk平台</p>
 <p>我们的架构图：<br>
 <img src="https://xxliud.github.io/post-images/1592915101615.png" alt="" loading="lazy"></p>
@@ -230,7 +230,7 @@ output.kafka:
 
       <div class="sm-12 md-4 col sidebar">
   <div class="paper info-container">
-    <img src="https://xxliud.github.io/images/avatar.png?v=1592917070127" class="no-responsive avatar">
+    <img src="https://xxliud.github.io/images/avatar.png?v=1592917153261" class="no-responsive avatar">
     <div class="text-muted">念念不忘，必有回响</div>
     <div class="social-container">
       
@@ -284,7 +284,7 @@ output.kafka:
           k8s
         </a>
       
-        <a href="https://xxliud.github.io/tag/HY3-GaR6fe/" class="badge warning">
+        <a href="https://xxliud.github.io/tag/HY3-GaR6fe/" class="badge ">
           istio
         </a>
       
@@ -292,7 +292,7 @@ output.kafka:
           docker
         </a>
       
-        <a href="https://xxliud.github.io/tag/l_Dflz6PnD/" class="badge ">
+        <a href="https://xxliud.github.io/tag/l_Dflz6PnD/" class="badge warning">
           elk
         </a>
       
