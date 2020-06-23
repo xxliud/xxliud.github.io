@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://xxliud.github.io</id>
     <title>Zcbb - Workspace</title>
-    <updated>2020-06-23T16:14:23.718Z</updated>
+    <updated>2020-06-23T16:25:53.491Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://xxliud.github.io"/>
     <link rel="self" href="https://xxliud.github.io/atom.xml"/>
@@ -10,6 +10,154 @@
     <logo>https://xxliud.github.io/images/avatar.png</logo>
     <icon>https://xxliud.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, Zcbb - Workspace</rights>
+    <entry>
+        <title type="html"><![CDATA[K8s - 金丝雀发布]]></title>
+        <id>https://xxliud.github.io/post/k8s-gray/</id>
+        <link href="https://xxliud.github.io/post/k8s-gray/">
+        </link>
+        <updated>2020-06-23T16:16:43.000Z</updated>
+        <content type="html"><![CDATA[<ul>
+<li>确认istio-ingressgateway是否有对外的IP</li>
+</ul>
+<pre><code class="language-shell">kubectl get  service istio-ingressgateway -n istio-system
+</code></pre>
+<ul>
+<li>编辑EXTERNAL-IP<br>
+<img src="https://xxliud.github.io/post-images/1592929126734.png" alt="" loading="lazy"></li>
+</ul>
+<pre><code class="language-shell">kubectl edit  service istio-ingressgateway -n istio-system
+</code></pre>
+<ul>
+<li>建立deployment</li>
+</ul>
+<pre><code class="language-yaml">apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: nginx-app-1
+spec:
+  replicas: 1
+  template:
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: &quot;true&quot;
+      labels:
+        app: nginx-app
+        version: v1
+    spec:
+      containers:
+        - name: nginx-app-1
+          image: datacenter:v0.0.1
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: nginx-app-2
+spec:
+  replicas: 1
+  template:
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: &quot;true&quot;
+      labels:
+        app: nginx-app
+        version: v2
+    spec:
+      containers:
+        - name: nginx-app-2
+          image: datacenter:v0.0.2
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+</code></pre>
+<ul>
+<li>建立service</li>
+</ul>
+<pre><code class="language-yaml">apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-svc
+  labels:
+    svcname: nginx-svc
+spec:
+  ports:
+  - port: 8088
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: nginx-app
+</code></pre>
+<ul>
+<li>建立gateway</li>
+</ul>
+<pre><code class="language-yaml">apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: nginx-gateway
+spec:
+  selector:
+    istio: ingressgateway # use Istio default gateway implementation
+  servers:
+  - port:
+      number: 80
+      name: nginx-http
+      protocol: HTTP
+    hosts:
+    - istio-zcbb.com
+</code></pre>
+<ul>
+<li>建立VirtualService</li>
+</ul>
+<pre><code class="language-yaml">apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: nginx-vs
+spec:
+  hosts:
+  - istio-zcbb.com
+  gateways:
+  - nginx-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /
+    route:
+    - destination:
+        host: nginx-svc
+        subset: v1
+      weight: 70
+    - destination:
+        host: nginx-svc
+        subset: v2
+      weight: 30
+</code></pre>
+<ul>
+<li>建立DestinationRule</li>
+</ul>
+<pre><code class="language-yaml">apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: nginx-app
+spec:
+  host: nginx-svc
+  subsets:
+  - name: v1
+    labels:
+      version: v1
+  - name: v2
+    labels:
+      version: v2
+</code></pre>
+<pre><code class="language-shell">Istio Virtual Service，用于控制当前deployment和金丝雀deployment流量分配的权重
+Istio Destination Rule，包含当前deployment和金丝雀deployment的子集（subset）
+Istio Gateway（可选），如果服务需要从容器集群外被访问则需要搭建gateway
+</code></pre>
+<p>至此最简单的金丝雀发布完成，后期可以定制各种灰度策略</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[K8s- 蓝绿发布]]></title>
         <id>https://xxliud.github.io/post/k8s-blue-green/</id>
@@ -448,8 +596,9 @@ spec:
 [ * ] <a href="https://xxliud.github.io/post/k8s-mongo" title="k8s-mongo">K8s Install Mongo</a><br>
 [ * ] <a href="https://xxliud.github.io/post/k8s-zk-kafka" title="k8s-zk-kafka">K8s Install Zookerper Kafka</a><br>
 [ * ] <a href="https://xxliud.github.io/post/k8s-elk" title="k8s-elk">K8s Install ELK</a><br>
-[ * ] <a href="https://xxliud.github.io/post/k8s-blue-green" title="k8s-blue-green">Install Istio</a><br>
-[ * ] [K8s Bule Green Release][6]</p>
+[ * ] <a href="https://xxliud.github.io/post/k8s-istio" title="k8s-istio">Install Istio</a><br>
+[ * ] <a href="https://xxliud.github.io/post/k8s-blue-green" title="k8s-blue-green">K8s Bule Green Release</a><br>
+[ * ] <a href="https://xxliud.github.io/post/k8s-gray" title="k8s-gary">K8s Gray Release</a></p>
 ]]></content>
     </entry>
     <entry>

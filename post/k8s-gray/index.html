@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>关于 | Zcbb - Workspace</title>
+<title>K8s - 金丝雀发布 | Zcbb - Workspace</title>
 <meta name="description" content="念念不忘，必有回响">
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -81,34 +81,181 @@
       <div class="sm-12 md-8 col">
         <div class="paper">
           <article class="article">
-            <h1>关于</h1>
+            <h1>K8s - 金丝雀发布</h1>
             <p class="article-meta">
-              2019-01-25
+              2020-06-24
+              
+                <a href="https://xxliud.github.io/tag/guz4RVyTI/" class="badge secondary">
+                  gray
+                </a>
+              
+                <a href="https://xxliud.github.io/tag/7_qXOjqqva/" class="badge success">
+                  kubernetes
+                </a>
+              
+                <a href="https://xxliud.github.io/tag/av9x9M2mK/" class="badge secondary">
+                  k8s
+                </a>
               
             </p>
             
             <div class="post-content">
-              <blockquote>
-<p>欢迎来到我的小站呀，很高兴遇见你！🤝</p>
-</blockquote>
-<h2 id="关于本站">🏠 关于本站</h2>
-<pre><code class="language-shell"># 建站目的
-# 1. 希望能督促自己不断进步
-# 2. 希望能帮助有需要的人，少走弯路
+              <ul>
+<li>确认istio-ingressgateway是否有对外的IP</li>
+</ul>
+<pre><code class="language-shell">kubectl get  service istio-ingressgateway -n istio-system
 </code></pre>
-<h2 id="博主是谁">👨‍💻 博主是谁</h2>
-<pre><code class="language-shell"># 80后超级奶爸
-# 80后超级买手
-# 80后咸鱼爱好者
+<ul>
+<li>编辑EXTERNAL-IP<br>
+<img src="https://xxliud.github.io/post-images/1592929126734.png" alt="" loading="lazy"></li>
+</ul>
+<pre><code class="language-shell">kubectl edit  service istio-ingressgateway -n istio-system
 </code></pre>
-<h2 id="求打赏">📬 求打赏</h2>
-<p><img src="https://xxliud.github.io/post-images/1592917961426.png" alt="" loading="lazy"><br>
-<img src="https://xxliud.github.io/post-images/1592917966745.png" alt="" loading="lazy"></p>
+<ul>
+<li>建立deployment</li>
+</ul>
+<pre><code class="language-yaml">apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: nginx-app-1
+spec:
+  replicas: 1
+  template:
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: &quot;true&quot;
+      labels:
+        app: nginx-app
+        version: v1
+    spec:
+      containers:
+        - name: nginx-app-1
+          image: datacenter:v0.0.1
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: nginx-app-2
+spec:
+  replicas: 1
+  template:
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: &quot;true&quot;
+      labels:
+        app: nginx-app
+        version: v2
+    spec:
+      containers:
+        - name: nginx-app-2
+          image: datacenter:v0.0.2
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+</code></pre>
+<ul>
+<li>建立service</li>
+</ul>
+<pre><code class="language-yaml">apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-svc
+  labels:
+    svcname: nginx-svc
+spec:
+  ports:
+  - port: 8088
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: nginx-app
+</code></pre>
+<ul>
+<li>建立gateway</li>
+</ul>
+<pre><code class="language-yaml">apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: nginx-gateway
+spec:
+  selector:
+    istio: ingressgateway # use Istio default gateway implementation
+  servers:
+  - port:
+      number: 80
+      name: nginx-http
+      protocol: HTTP
+    hosts:
+    - istio-zcbb.com
+</code></pre>
+<ul>
+<li>建立VirtualService</li>
+</ul>
+<pre><code class="language-yaml">apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: nginx-vs
+spec:
+  hosts:
+  - istio-zcbb.com
+  gateways:
+  - nginx-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /
+    route:
+    - destination:
+        host: nginx-svc
+        subset: v1
+      weight: 70
+    - destination:
+        host: nginx-svc
+        subset: v2
+      weight: 30
+</code></pre>
+<ul>
+<li>建立DestinationRule</li>
+</ul>
+<pre><code class="language-yaml">apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: nginx-app
+spec:
+  host: nginx-svc
+  subsets:
+  - name: v1
+    labels:
+      version: v1
+  - name: v2
+    labels:
+      version: v2
+</code></pre>
+<pre><code class="language-shell">Istio Virtual Service，用于控制当前deployment和金丝雀deployment流量分配的权重
+Istio Destination Rule，包含当前deployment和金丝雀deployment的子集（subset）
+Istio Gateway（可选），如果服务需要从容器集群外被访问则需要搭建gateway
+</code></pre>
+<p>至此最简单的金丝雀发布完成，后期可以定制各种灰度策略</p>
 
             </div>
           </article>
         </div>
         <div class="paper" data-aos="fade-in">
+          
+            <div class="next-post">
+              <div class="next">
+                下一篇
+              </div>
+              <a href="https://xxliud.github.io/post/k8s-blue-green/">
+                <h3 class="post-title">
+                  K8s- 蓝绿发布
+                </h3>
+              </a>
+            </div>
           
         </div>
         
@@ -202,15 +349,15 @@
     </div>
     <div class="row">
       
-        <a href="https://xxliud.github.io/tag/guz4RVyTI/" class="badge secondary">
+        <a href="https://xxliud.github.io/tag/guz4RVyTI/" class="badge warning">
           gray
         </a>
       
-        <a href="https://xxliud.github.io/tag/7_qXOjqqva/" class="badge warning">
+        <a href="https://xxliud.github.io/tag/7_qXOjqqva/" class="badge ">
           kubernetes
         </a>
       
-        <a href="https://xxliud.github.io/tag/av9x9M2mK/" class="badge secondary">
+        <a href="https://xxliud.github.io/tag/av9x9M2mK/" class="badge success">
           k8s
         </a>
       
@@ -218,15 +365,15 @@
           blue
         </a>
       
-        <a href="https://xxliud.github.io/tag/NmrxowzWRm/" class="badge success">
+        <a href="https://xxliud.github.io/tag/NmrxowzWRm/" class="badge secondary">
           green
         </a>
       
-        <a href="https://xxliud.github.io/tag/l_Dflz6PnD/" class="badge warning">
+        <a href="https://xxliud.github.io/tag/l_Dflz6PnD/" class="badge secondary">
           elk
         </a>
       
-        <a href="https://xxliud.github.io/tag/PmvrVDhpM/" class="badge success">
+        <a href="https://xxliud.github.io/tag/PmvrVDhpM/" class="badge ">
           kafka
         </a>
       
@@ -234,19 +381,19 @@
           zookerper
         </a>
       
-        <a href="https://xxliud.github.io/tag/IjQfyISzV-/" class="badge secondary">
+        <a href="https://xxliud.github.io/tag/IjQfyISzV-/" class="badge warning">
           mongo
         </a>
       
-        <a href="https://xxliud.github.io/tag/OG87VxQwT/" class="badge secondary">
+        <a href="https://xxliud.github.io/tag/OG87VxQwT/" class="badge warning">
           docker
         </a>
       
-        <a href="https://xxliud.github.io/tag/HY3-GaR6fe/" class="badge success">
+        <a href="https://xxliud.github.io/tag/HY3-GaR6fe/" class="badge secondary">
           istio
         </a>
       
-        <a href="https://xxliud.github.io/tag/6PcdngTdA/" class="badge success">
+        <a href="https://xxliud.github.io/tag/6PcdngTdA/" class="badge warning">
           minikube
         </a>
       
