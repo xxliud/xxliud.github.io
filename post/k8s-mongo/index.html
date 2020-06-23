@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>k8s | Zcbb - Workspace</title>
+<title>K8s - Mongo安装篇 | Zcbb - Workspace</title>
 <meta name="description" content="念念不忘，必有回响">
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -23,6 +23,7 @@
 
   </head>
   <body>
+  
     <nav class="navbar border fixed split-nav">
   <div class="nav-brand">
     <h3><a href="https://xxliud.github.io">Zcbb - Workspace</a></h3>
@@ -79,84 +80,97 @@
     <div id="top" class="row site">
       <div class="sm-12 md-8 col">
         <div class="paper">
-          <h2 class="current-tag">标签: k8s</h2>
-          
-  <article class="article">
-    <h2 class="article-title">
-      <a href="https://xxliud.github.io/post/k8s/">K8s - 学习资料汇总</a>
-    </h2>
-    <p class="article-meta">
-      2020-06-23
-      
-        <a href="https://xxliud.github.io/tag/av9x9M2mK/" class="badge warning">
-          k8s
-        </a>
-      
-        <a href="https://xxliud.github.io/tag/HY3-GaR6fe/" class="badge ">
-          istio
-        </a>
-      
-        <a href="https://xxliud.github.io/tag/OG87VxQwT/" class="badge ">
-          docker
-        </a>
-      
-    </p>
-    <p class="text-lead">
-      
-    </p>
-    <div class="row">
-      <a href="https://xxliud.github.io/post/k8s/" class="readmore-link">
-        <button>
-          Read More
-        </button>
-      </a>
-    </div>
-  </article>
+          <article class="article">
+            <h1>K8s - Mongo安装篇</h1>
+            <p class="article-meta">
+              2020-06-23
+              
+                <a href="https://xxliud.github.io/tag/IjQfyISzV-/" class="badge secondary">
+                  mongo
+                </a>
+              
+                <a href="https://xxliud.github.io/tag/7_qXOjqqva/" class="badge ">
+                  kubernetes
+                </a>
+              
+                <a href="https://xxliud.github.io/tag/OG87VxQwT/" class="badge secondary">
+                  docker
+                </a>
+              
+            </p>
+            
+            <div class="post-content">
+              <ul>
+<li>创建namespace</li>
+</ul>
+<pre><code class="language-shell">kubectl create namespace base
+</code></pre>
+<ul>
+<li>创建deployment service</li>
+</ul>
+<pre><code class="language-yaml">--- # mongo deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-mongo
+  namespace: base
+  labels:
+    app: my-mongo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-mongo
+  template:
+    metadata:
+      labels:
+        app: my-mongo
+    spec:
+      containers:
+      - name: my-mongo
+        image: mongo
+        ports:
+        - containerPort: 27017
 
-  <article class="article">
-    <h2 class="article-title">
-      <a href="https://xxliud.github.io/post/minikube-install/">K8s - Minikube安装篇</a>
-    </h2>
-    <p class="article-meta">
-      2020-06-23
-      
-        <a href="https://xxliud.github.io/tag/6PcdngTdA/" class="badge secondary">
-          minikube
-        </a>
-      
-        <a href="https://xxliud.github.io/tag/7_qXOjqqva/" class="badge secondary">
-          kubernetes
-        </a>
-      
-        <a href="https://xxliud.github.io/tag/av9x9M2mK/" class="badge warning">
-          k8s
-        </a>
-      
-        <a href="https://xxliud.github.io/tag/OG87VxQwT/" class="badge warning">
-          docker
-        </a>
-      
-    </p>
-    <p class="text-lead">
-      
-    </p>
-    <div class="row">
-      <a href="https://xxliud.github.io/post/minikube-install/" class="readmore-link">
-        <button>
-          Read More
-        </button>
-      </a>
-    </div>
-  </article>
+---  # mongo service
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-mongo
+  namespace: base
+  labels:
+    name: my-mongo
+spec:
+  type: NodePort
+  ports:
+  - port: 27017
+    targetPort: 27017
+    protocol: TCP
+    nodePort: 30000
+  selector:
+    app: my-mongo
+</code></pre>
 
-
+            </div>
+          </article>
         </div>
-        <div class="row flex-edges">
-  
-  
-</div>
-
+        <div class="paper" data-aos="fade-in">
+          
+            <div class="next-post">
+              <div class="next">
+                下一篇
+              </div>
+              <a href="https://xxliud.github.io/post/k8s/">
+                <h3 class="post-title">
+                  K8s - 学习资料汇总
+                </h3>
+              </a>
+            </div>
+          
+        </div>
+        
       </div>
+
       <div class="sm-12 md-4 col sidebar">
   <div class="paper info-container">
     <img src="https://xxliud.github.io/images/avatar.png?v=1592923951296" class="no-responsive avatar">
@@ -221,27 +235,27 @@
     </div>
     <div class="row">
       
-        <a href="https://xxliud.github.io/tag/IjQfyISzV-/" class="badge secondary">
+        <a href="https://xxliud.github.io/tag/IjQfyISzV-/" class="badge ">
           mongo
         </a>
       
-        <a href="https://xxliud.github.io/tag/7_qXOjqqva/" class="badge secondary">
+        <a href="https://xxliud.github.io/tag/7_qXOjqqva/" class="badge ">
           kubernetes
         </a>
       
-        <a href="https://xxliud.github.io/tag/OG87VxQwT/" class="badge ">
+        <a href="https://xxliud.github.io/tag/OG87VxQwT/" class="badge secondary">
           docker
         </a>
       
-        <a href="https://xxliud.github.io/tag/av9x9M2mK/" class="badge secondary">
+        <a href="https://xxliud.github.io/tag/av9x9M2mK/" class="badge ">
           k8s
         </a>
       
-        <a href="https://xxliud.github.io/tag/HY3-GaR6fe/" class="badge warning">
+        <a href="https://xxliud.github.io/tag/HY3-GaR6fe/" class="badge success">
           istio
         </a>
       
-        <a href="https://xxliud.github.io/tag/6PcdngTdA/" class="badge secondary">
+        <a href="https://xxliud.github.io/tag/6PcdngTdA/" class="badge warning">
           minikube
         </a>
       
@@ -255,6 +269,7 @@
     Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://xxliud.github.io/atom.xml" target="_blank">RSS</a>
   </div>
 </div>
+
 
     </div>
 
