@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>zookerper | Zcbb - Workspace</title>
+<title>K8s- 蓝绿发布 | Zcbb - Workspace</title>
 <meta name="description" content="念念不忘，必有回响">
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -23,6 +23,7 @@
 
   </head>
   <body>
+  
     <nav class="navbar border fixed split-nav">
   <div class="nav-brand">
     <h3><a href="https://xxliud.github.io">Zcbb - Workspace</a></h3>
@@ -79,52 +80,135 @@
     <div id="top" class="row site">
       <div class="sm-12 md-8 col">
         <div class="paper">
-          <h2 class="current-tag">标签: zookerper</h2>
-          
-  <article class="article">
-    <h2 class="article-title">
-      <a href="https://xxliud.github.io/post/k8s-zk-kafka/">K8s - zk&amp;kafka安装</a>
-    </h2>
-    <p class="article-meta">
-      2020-06-23
-      
-        <a href="https://xxliud.github.io/tag/PmvrVDhpM/" class="badge ">
-          kafka
-        </a>
-      
-        <a href="https://xxliud.github.io/tag/v-M3DeXz83/" class="badge ">
-          zookerper
-        </a>
-      
-        <a href="https://xxliud.github.io/tag/7_qXOjqqva/" class="badge success">
-          kubernetes
-        </a>
-      
-        <a href="https://xxliud.github.io/tag/av9x9M2mK/" class="badge secondary">
-          k8s
-        </a>
-      
-    </p>
-    <p class="text-lead">
-      
-    </p>
-    <div class="row">
-      <a href="https://xxliud.github.io/post/k8s-zk-kafka/" class="readmore-link">
-        <button>
-          Read More
-        </button>
-      </a>
-    </div>
-  </article>
+          <article class="article">
+            <h1>K8s- 蓝绿发布</h1>
+            <p class="article-meta">
+              2020-06-24
+              
+                <a href="https://xxliud.github.io/tag/Iw2xxP0JB/" class="badge warning">
+                  blue
+                </a>
+              
+                <a href="https://xxliud.github.io/tag/NmrxowzWRm/" class="badge warning">
+                  green
+                </a>
+              
+                <a href="https://xxliud.github.io/tag/7_qXOjqqva/" class="badge ">
+                  kubernetes
+                </a>
+              
+                <a href="https://xxliud.github.io/tag/av9x9M2mK/" class="badge success">
+                  k8s
+                </a>
+              
+            </p>
+            
+            <div class="post-content">
+              <ul>
+<li>实现原理，多pod，切换service verson指向</li>
+<li>启动两个版本的deployment</li>
+</ul>
+<pre><code class="language-yaml">--- service 指向v1
+apiVersion: v1
+kind: Service
+metadata:
+  name: demo
+  namespace: default
+  labels:
+    app: demo
+spec:
+  ports:
+    - port: 80
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app: demo
+    version: v1
+--- depliyment v1
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo1-deployment
+  namespace: default
+  labels:
+    app: demo
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: demo
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: demo
+        version: v1
+    spec:
+      containers:
+      - name: demo1
+        image: database:v0.01
+        ports:
+          - name: http
+            containerPort: 80
+            protocol: TCP
 
+--- depliyment v2
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo2-deployment
+  namespace: default
+  labels:
+    app: demo
+    version: v2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: demo
+      version: v2
+  template:
+    metadata:
+      labels:
+        app: demo
+        version: v2
+    spec:
+      containers:
+      - name: demo2
+        image: database:v0.02
+        ports:
+          - name: http
+            containerPort: 80
+            protocol: TCP
+</code></pre>
+<ul>
+<li>切换入口流量从v1 到 v2</li>
+</ul>
+<pre><code class="language-shell">kubectl patch service demo -p '{&quot;spec&quot;:{&quot;selector&quot;:{&quot;version&quot;:&quot;v2&quot;}}}'
+</code></pre>
 
+            </div>
+          </article>
         </div>
-        <div class="row flex-edges">
-  
-  
-</div>
-
+        <div class="paper" data-aos="fade-in">
+          
+            <div class="next-post">
+              <div class="next">
+                下一篇
+              </div>
+              <a href="https://xxliud.github.io/post/k8s-elk/">
+                <h3 class="post-title">
+                  K8s - 安装ELK
+                </h3>
+              </a>
+            </div>
+          
+        </div>
+        
       </div>
+
       <div class="sm-12 md-4 col sidebar">
   <div class="paper info-container">
     <img src="https://xxliud.github.io/images/avatar.png?v=1592928858452" class="no-responsive avatar">
@@ -211,11 +295,11 @@
           blue
         </a>
       
-        <a href="https://xxliud.github.io/tag/NmrxowzWRm/" class="badge secondary">
+        <a href="https://xxliud.github.io/tag/NmrxowzWRm/" class="badge ">
           green
         </a>
       
-        <a href="https://xxliud.github.io/tag/7_qXOjqqva/" class="badge ">
+        <a href="https://xxliud.github.io/tag/7_qXOjqqva/" class="badge warning">
           kubernetes
         </a>
       
@@ -235,15 +319,15 @@
           zookerper
         </a>
       
-        <a href="https://xxliud.github.io/tag/IjQfyISzV-/" class="badge secondary">
+        <a href="https://xxliud.github.io/tag/IjQfyISzV-/" class="badge warning">
           mongo
         </a>
       
-        <a href="https://xxliud.github.io/tag/OG87VxQwT/" class="badge warning">
+        <a href="https://xxliud.github.io/tag/OG87VxQwT/" class="badge success">
           docker
         </a>
       
-        <a href="https://xxliud.github.io/tag/HY3-GaR6fe/" class="badge warning">
+        <a href="https://xxliud.github.io/tag/HY3-GaR6fe/" class="badge secondary">
           istio
         </a>
       
@@ -257,6 +341,7 @@
     Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://xxliud.github.io/atom.xml" target="_blank">RSS</a>
   </div>
 </div>
+
 
     </div>
 
