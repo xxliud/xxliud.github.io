@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>K8s - zk&amp;kafka安装 | Zcbb - Workspace</title>
+<title>K8s - 安装ELK | Zcbb - Workspace</title>
 <meta name="description" content="念念不忘，必有回响">
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -81,19 +81,11 @@
       <div class="sm-12 md-8 col">
         <div class="paper">
           <article class="article">
-            <h1>K8s - zk&amp;kafka安装</h1>
+            <h1>K8s - 安装ELK</h1>
             <p class="article-meta">
               2020-06-23
               
-                <a href="https://xxliud.github.io/tag/PmvrVDhpM/" class="badge secondary">
-                  kafka
-                </a>
-              
-                <a href="https://xxliud.github.io/tag/v-M3DeXz83/" class="badge secondary">
-                  zookerper
-                </a>
-              
-                <a href="https://xxliud.github.io/tag/7_qXOjqqva/" class="badge warning">
+                <a href="https://xxliud.github.io/tag/7_qXOjqqva/" class="badge secondary">
                   kubernetes
                 </a>
               
@@ -101,116 +93,166 @@
                   k8s
                 </a>
               
+                <a href="https://xxliud.github.io/tag/l_Dflz6PnD/" class="badge success">
+                  elk
+                </a>
+              
             </p>
             
             <div class="post-content">
               <ul>
-<li>创建zookerper deployment service</li>
+<li>创建namespace elk</li>
 </ul>
-<pre><code class="language-yaml">--- # zk deploy
-kind: Deployment
-apiVersion: apps/v1
-metadata:
-  name: my-zk
-  namespace: base
-  labels:
-    app: my-zk
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: my-zk
-  template:
-    metadata:
-      labels:
-        app: my-zk
-    spec:
-      hostname: my-zk
-      dnsPolicy: ClusterFirst
-      containers:
-      - name: my-zk
-        image: zookeeper
-        imagePullPolicy: IfNotPresent
-        volumeMounts:
-        ports:
-        - containerPort: 2181
-        - containerPort: 2888
-        - containerPort: 3888
-
-### zk service
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: my-zk
-  namespace: base
-  labels:
-    name: my-zk
-spec:
-  type: NodePort
-  ports:
-  - port:
-    port: 2181
-    targetPort: 2181
-    protocol: TCP
-        nodePort: 30001
-  selector:
-    app: my-zk
+<pre><code class="language-shell">kubectl create namespace elk
 </code></pre>
 <ul>
-<li>创建kafka deployment service</li>
+<li>创建elasticsearch deployment service</li>
 </ul>
-<pre><code class="language-yaml">--- # kafka deploy
-kind: Deployment
+<pre><code class="language-yaml">--- # elasticsearch deployment
 apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: my-kafka
-  namespace: base
+  name: elasticsearch
+  namespace: elk
   labels:
-    app: my-kafka
+    app: elasticsearch
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: my-kafka
+      app: elasticsearch
   template:
     metadata:
       labels:
-        app: my-kafka
+        app: elasticsearch
     spec:
-      hostname: my-kafka
-      dnsPolicy: ClusterFirst
-      containers:
-      - name: my-kafka
-        image: wurstmeister/kafka
-        imagePullPolicy: IfNotPresent
-        ports:
-        - containerPort: 9092
-        env:
-        - name: KAFKA_ZOOKEEPER_CONNECT
-          value: 'my-zk.base:2181'
-        - name: KAFKA_ADVERTISED_HOST_NAME
-          value: 'ClusterIP'
-        - name: KAFKA_ADVERTISED_PORT
-          value: 'NodePort'
+        hostname: elasticsearch
+        containers:
+         - image: elasticsearch:6.8.4
+           imagePullPolicy: IfNotPresent
+           name: elasticsearch
+           ports:
+             - name: es-port
+               containerPort: 9200
+             - name: es-tran-port
+               containerPort: 9300
 
---- # kafka service
+--- # elasticsearch service
 apiVersion: v1
 kind: Service
 metadata:
-  name: my-kafka
-  namespace: base
+  name: elasticsearch
+  namespace: elk
   labels:
-    name: my-kafka
+    name: elasticsearch
 spec:
   type: NodePort
   ports:
-  - port: 9092
-    targetPort: 9092
+  - port: 9200
+    targetPort: 9200
     protocol: TCP
-    nodePort: 30002
+    nodePort: 30011
   selector:
-    app: my-kafka
+    app: elasticsearch
+</code></pre>
+<ul>
+<li>创建logstash deployment service, 配置文件参考之前文章</li>
+</ul>
+<pre><code class="language-yaml">--- # logstash deploy
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-logstash
+  namespace: elk
+  labels:
+    app: my-logstash
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-logstash
+  template:
+    metadata:
+      labels:
+        app: my-logstash
+    spec:
+      containers:
+        - name: my-logstash
+          image: logstash:6.8.4
+          imagePullPolicy: IfNotPresent
+          ports:
+          - containerPort: 5044
+          volumeMounts:
+          - name: log-config
+            mountPath: /usr/share/pipeline
+      volumes:
+       - name: log-config
+         hostPath:
+          path: /Users/xingxu/elk/logstash/pipeline
+
+--- # logstash service
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-logstash
+  namespace: elk
+  labels:
+    name: my-logstash
+spec:
+  type: NodePort
+  ports:
+  - port: 5044
+    targetPort: 5044
+    protocol: TCP
+    nodePort: 30012
+  selector:
+    app: my-logstash
+</code></pre>
+<ul>
+<li>创建kibana deployment service</li>
+</ul>
+<pre><code class="language-yaml">--- # kibana deploy
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-kibana
+  namespace: elk
+  labels:
+    app: my-kibana
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-kibana
+  template:
+    metadata:
+      labels:
+        app: my-kibana
+    spec:
+      containers:
+        - name: my-kibana
+          image: kibana:6.8.4
+          imagePullPolicy: IfNotPresent
+          ports:
+          - containerPort: 5601
+
+--- # kibana service
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-kibana
+  namespace: elk
+  labels:
+    name: my-kibana
+spec:
+  type: NodePort
+  ports:
+  - port: 5601
+    targetPort: 5601
+    protocol: TCP
+    nodePort: 30010
+  selector:
+    app: my-kibana
 </code></pre>
 
             </div>
@@ -222,9 +264,9 @@ spec:
               <div class="next">
                 下一篇
               </div>
-              <a href="https://xxliud.github.io/post/k8s-mongo/">
+              <a href="https://xxliud.github.io/post/k8s-zk-kafka/">
                 <h3 class="post-title">
-                  K8s - Mongo安装篇
+                  K8s - zk&amp;kafka安装
                 </h3>
               </a>
             </div>
@@ -313,11 +355,11 @@ spec:
           kubernetes
         </a>
       
-        <a href="https://xxliud.github.io/tag/av9x9M2mK/" class="badge warning">
+        <a href="https://xxliud.github.io/tag/av9x9M2mK/" class="badge success">
           k8s
         </a>
       
-        <a href="https://xxliud.github.io/tag/l_Dflz6PnD/" class="badge ">
+        <a href="https://xxliud.github.io/tag/l_Dflz6PnD/" class="badge warning">
           elk
         </a>
       
@@ -325,15 +367,15 @@ spec:
           kafka
         </a>
       
-        <a href="https://xxliud.github.io/tag/v-M3DeXz83/" class="badge ">
+        <a href="https://xxliud.github.io/tag/v-M3DeXz83/" class="badge secondary">
           zookerper
         </a>
       
-        <a href="https://xxliud.github.io/tag/IjQfyISzV-/" class="badge secondary">
+        <a href="https://xxliud.github.io/tag/IjQfyISzV-/" class="badge success">
           mongo
         </a>
       
-        <a href="https://xxliud.github.io/tag/OG87VxQwT/" class="badge secondary">
+        <a href="https://xxliud.github.io/tag/OG87VxQwT/" class="badge warning">
           docker
         </a>
       
@@ -341,7 +383,7 @@ spec:
           istio
         </a>
       
-        <a href="https://xxliud.github.io/tag/6PcdngTdA/" class="badge secondary">
+        <a href="https://xxliud.github.io/tag/6PcdngTdA/" class="badge ">
           minikube
         </a>
       
