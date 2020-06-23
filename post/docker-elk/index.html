@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>我们与ELK的距离 | Zcbb - Workspace</title>
+<meta name="description" content="念念不忘，必有回响">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<link rel="shortcut icon" href="https://xxliud.github.io/favicon.ico?v=1592916024075">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://unpkg.com/papercss@1.6.1/dist/paper.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://xxliud.github.io/styles/main.css">
+
+
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+
+  </head>
+  <body>
+  
+    <nav class="navbar border fixed split-nav">
+  <div class="nav-brand">
+    <h3><a href="https://xxliud.github.io">Zcbb - Workspace</a></h3>
+  </div>
+  <div class="collapsible">
+    <input id="collapsible1" type="checkbox" name="collapsible1">
+    <button>
+      <label for="collapsible1">
+        <div class="bar1"></div>
+        <div class="bar2"></div>
+        <div class="bar3"></div>
+      </label>
+    </button>
+    <div class="collapsible-body">
+      <ul class="inline">
+        
+          <li>
+            
+              <a href="/" class="menu">
+                首页
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/archives" class="menu">
+                归档
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/tags" class="menu">
+                标签
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/post/about" class="menu">
+                关于
+              </a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div id="top" class="row site">
+      <div class="sm-12 md-8 col">
+        <div class="paper">
+          <article class="article">
+            <h1>我们与ELK的距离</h1>
+            <p class="article-meta">
+              2020-06-23
+              
+                <a href="https://xxliud.github.io/tag/OG87VxQwT/" class="badge success">
+                  docker
+                </a>
+              
+                <a href="https://xxliud.github.io/tag/l_Dflz6PnD/" class="badge secondary">
+                  elk
+                </a>
+              
+            </p>
+            
+              <img src="https://xxliud.github.io/post-images/docker-elk.jpg" alt="我们与ELK的距离">
+            
+            <div class="post-content">
+              <p><img src="https://xxliud.github.io/post-images/1592915083405.jpg" alt="" loading="lazy"><br>
+ELK是Elasticsearch、Logstash、Kibana三大开源框架首字母大写简称。市面上也被成为Elastic Stack。其中Elasticsearch是一个基于Lucene、分布式、通过Restful方式进行交互的近实时搜索平台框架。像类似百度、谷歌这种大数据全文搜索引擎的场景都可以使用Elasticsearch作为底层支持框架，可见Elasticsearch提供的搜索能力确实强大,市面上很多时候我们简称Elasticsearch为es。Logstash是ELK的中央数据流引擎，用于从不同目标（文件/数据存储/MQ）收集的不同格式数据，经过过滤后支持输出到不同目的地（文件/MQ/redis/elasticsearch/kafka等）。Kibana可以将elasticsearch的数据通过友好的页面展示出来，提供实时分析的功能。</p>
+<p>下面简单介绍一下docker下如何搭建elk平台</p>
+<p>我们的架构图：<br>
+<img src="https://xxliud.github.io/post-images/1592915101615.png" alt="" loading="lazy"></p>
+<p>下面我们使用docker进行搭建</p>
+<ul>
+<li>创建网络</li>
+</ul>
+<pre><code class="language-shell">docker network create somenetwork
+</code></pre>
+<ul>
+<li>拉取需要的镜像</li>
+</ul>
+<pre><code class="language-shell">docker pull zookeeper:latest   # zk
+docker pull wurstmeister/kafka:latest  # kafka
+docker pull elasticsearch:6.8.4  # es
+docker pull logstash:6.8.4  # logstash
+docker pull kibana:6.8.4   #kibana
+</code></pre>
+<ul>
+<li>创建zk + kafka</li>
+</ul>
+<pre><code class="language-shell"># zookeeper
+docker run -d --name zookeeper \
+--publish 2181:2181  zookeeper:latest
+
+# kafka
+docker run -d --name kafka --publish 9092:9092 \
+--link zookeeper \
+--env KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181 \
+--env KAFKA_ADVERTISED_HOST_NAME=kafka所在宿主机的IP \
+--env KAFKA_ADVERTISED_PORT=9092 \
+--net somenetwork
+wurstmeister/kafka:latest
+
+
+# 测试
+docker exec -it kafka /bin/bash
+# 进入bin目录
+cd /opt/kafka_2.25-2.3.0/bin/
+# 创建topic
+./kafka-topics.sh --create --zookeeper zookeeper:2181 --replication-factor 1 --partitions 1 --topic elk-kafka-test 
+# 运行生产者并指定topic
+./kafka-console-producer.sh --broker-list 127.0.0.1:9092 --topic elk-kafka-test 
+# 新开窗口运行消费者，指定同样的topic， 注意替换kafkaIp
+./kafka-console-consumer.sh --bootstrap-server kafkaIp:9092 --topic elk-kafka-test --from-beginning
+</code></pre>
+<ul>
+<li>Elasticsearch 安装</li>
+</ul>
+<pre><code class="language-shell">docker run -d --name elasticsearch --net somenetwork -p 9200:9200 -p 9300:9300 -e &quot;discovery.type=single-node&quot; elasticsearch:6.8.4
+</code></pre>
+<p>验证 curl http://localhost:9200<br>
+<img src="https://xxliud.github.io/post-images/1592915628111.jpg" alt="" loading="lazy"></p>
+<ul>
+<li>Kibana 安装</li>
+</ul>
+<pre><code class="language-shell">docker run -d --name kibana --net somenetwork -p 5601:5601 kibana:6.8.4
+</code></pre>
+<p>验证 浏览器访问 http://localhost:5601<br>
+<img src="https://xxliud.github.io/post-images/1592915675748.jpg" alt="" loading="lazy"></p>
+<ul>
+<li>Logstash 安装<br>
+vim vim logstash.conf/logstash.conf</li>
+</ul>
+<pre><code class="language-shell">input {
+   kafka {
+     bootstrap_servers =&gt; [&quot;kafka:9092&quot;]
+     auto_offset_reset =&gt; &quot;latest&quot;
+     consumer_threads =&gt; 5
+     decorate_events =&gt; true
+     group_id =&gt; &quot;elk&quot;
+     topics =&gt; [&quot;elk_kafka_test&quot;]
+     type =&gt; &quot;bhy&quot;
+     codec =&gt; json {
+             charset =&gt; &quot;UTF-8&quot;
+     }
+   }
+}
+
+output {
+   stdout {}
+   elasticsearch {
+     hosts =&gt; [&quot;elasticsearch:9200&quot;]
+     index =&gt; &quot;test-elk-%{+YYYY.MM.dd}&quot;
+   }
+}
+</code></pre>
+<pre><code class="language-shell">docker run -it -d -p 5044:5044 --name logstash \
+--net somenetwork --link kafka --link elasticsearch \
+-v c:/usr/share/pipeline logstash:6.8.4
+</code></pre>
+<ul>
+<li>FileBeat 配置监听<br>
+编辑filebeat.yml</li>
+</ul>
+<pre><code class="language-shell">filebeat.inputs:
+- type: log
+  enabled: true
+  paths:
+    - /data/log/*.log
+  fields:
+    docType: sys-log
+
+output.kafka:
+  hosts: [&quot;kafkaIp:9092&quot;]
+  topic: &quot;elk_kafka_test&quot;
+</code></pre>
+<p>启动filebeat</p>
+<pre><code class="language-shell">./filebeat -c filebeat.yml -e
+</code></pre>
+<p>在/data/log/目录下变更日志文件，filebeat监听到变化，将日志在kafka中生产待logstash进行消费，在logstash容器内可以看到日志转换成json格式的数据存储到logstash里<br>
+<img src="https://xxliud.github.io/post-images/1592915981638.jpg" alt="" loading="lazy"><br>
+在kibana中查看<br>
+<img src="https://xxliud.github.io/post-images/1592915998023.jpg" alt="" loading="lazy"><br>
+至此ELK搭建完成</p>
+
+            </div>
+          </article>
+        </div>
+        <div class="paper" data-aos="fade-in">
+          
+            <div class="next-post">
+              <div class="next">
+                下一篇
+              </div>
+              <a href="https://xxliud.github.io/post/hello-gridea/">
+                <h3 class="post-title">
+                  Hello Gridea
+                </h3>
+              </a>
+            </div>
+          
+        </div>
+        
+      </div>
+
+      <div class="sm-12 md-4 col sidebar">
+  <div class="paper info-container">
+    <img src="https://xxliud.github.io/images/avatar.png?v=1592916024075" class="no-responsive avatar">
+    <div class="text-muted">念念不忘，必有回响</div>
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+  </div>
+  <div class="paper">
+    <div class="sidebar-title">
+      最新文章
+    </div>
+    <div class="row">
+      <ul>
+        
+          
+            <li>
+              <a href="https://xxliud.github.io/post/docker-elk/">我们与ELK的距离</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://xxliud.github.io/post/about/">关于</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://xxliud.github.io/post/hello-gridea/">Hello Gridea</a>
+            </li>
+          
+        
+      </ul>
+    </div>
+  </div>
+  <div class="paper">
+    <div class="sidebar-title">
+      标签列表
+    </div>
+    <div class="row">
+      
+        <a href="https://xxliud.github.io/tag/OG87VxQwT/" class="badge secondary">
+          docker
+        </a>
+      
+        <a href="https://xxliud.github.io/tag/l_Dflz6PnD/" class="badge secondary">
+          elk
+        </a>
+      
+        <a href="https://xxliud.github.io/tag/uPYX7IY1t/" class="badge secondary">
+          Gridea
+        </a>
+      
+    </div>
+  </div>
+  <div class="paper">
+    Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://xxliud.github.io/atom.xml" target="_blank">RSS</a>
+  </div>
+</div>
+
+
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script type="application/javascript">
+
+AOS.init();
+
+hljs.initHighlightingOnLoad()
+
+</script>
+
+
+
+
+  </body>
+</html>

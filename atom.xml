@@ -1,15 +1,140 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://xxliud.github.io</id>
-    <title>Gridea</title>
-    <updated>2020-06-23T12:17:39.266Z</updated>
+    <title>Zcbb - Workspace</title>
+    <updated>2020-06-23T12:40:57.676Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://xxliud.github.io"/>
     <link rel="self" href="https://xxliud.github.io/atom.xml"/>
-    <subtitle>温故而知新</subtitle>
+    <subtitle>念念不忘，必有回响</subtitle>
     <logo>https://xxliud.github.io/images/avatar.png</logo>
     <icon>https://xxliud.github.io/favicon.ico</icon>
-    <rights>All rights reserved 2020, Gridea</rights>
+    <rights>All rights reserved 2020, Zcbb - Workspace</rights>
+    <entry>
+        <title type="html"><![CDATA[我们与ELK的距离]]></title>
+        <id>https://xxliud.github.io/post/docker-elk/</id>
+        <link href="https://xxliud.github.io/post/docker-elk/">
+        </link>
+        <updated>2020-06-23T12:24:26.000Z</updated>
+        <content type="html"><![CDATA[<p><img src="https://xxliud.github.io/post-images/1592915083405.jpg" alt="" loading="lazy"><br>
+ELK是Elasticsearch、Logstash、Kibana三大开源框架首字母大写简称。市面上也被成为Elastic Stack。其中Elasticsearch是一个基于Lucene、分布式、通过Restful方式进行交互的近实时搜索平台框架。像类似百度、谷歌这种大数据全文搜索引擎的场景都可以使用Elasticsearch作为底层支持框架，可见Elasticsearch提供的搜索能力确实强大,市面上很多时候我们简称Elasticsearch为es。Logstash是ELK的中央数据流引擎，用于从不同目标（文件/数据存储/MQ）收集的不同格式数据，经过过滤后支持输出到不同目的地（文件/MQ/redis/elasticsearch/kafka等）。Kibana可以将elasticsearch的数据通过友好的页面展示出来，提供实时分析的功能。</p>
+<p>下面简单介绍一下docker下如何搭建elk平台</p>
+<p>我们的架构图：<br>
+<img src="https://xxliud.github.io/post-images/1592915101615.png" alt="" loading="lazy"></p>
+<p>下面我们使用docker进行搭建</p>
+<ul>
+<li>创建网络</li>
+</ul>
+<pre><code class="language-shell">docker network create somenetwork
+</code></pre>
+<ul>
+<li>拉取需要的镜像</li>
+</ul>
+<pre><code class="language-shell">docker pull zookeeper:latest   # zk
+docker pull wurstmeister/kafka:latest  # kafka
+docker pull elasticsearch:6.8.4  # es
+docker pull logstash:6.8.4  # logstash
+docker pull kibana:6.8.4   #kibana
+</code></pre>
+<ul>
+<li>创建zk + kafka</li>
+</ul>
+<pre><code class="language-shell"># zookeeper
+docker run -d --name zookeeper \
+--publish 2181:2181  zookeeper:latest
+
+# kafka
+docker run -d --name kafka --publish 9092:9092 \
+--link zookeeper \
+--env KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181 \
+--env KAFKA_ADVERTISED_HOST_NAME=kafka所在宿主机的IP \
+--env KAFKA_ADVERTISED_PORT=9092 \
+--net somenetwork
+wurstmeister/kafka:latest
+
+
+# 测试
+docker exec -it kafka /bin/bash
+# 进入bin目录
+cd /opt/kafka_2.25-2.3.0/bin/
+# 创建topic
+./kafka-topics.sh --create --zookeeper zookeeper:2181 --replication-factor 1 --partitions 1 --topic elk-kafka-test 
+# 运行生产者并指定topic
+./kafka-console-producer.sh --broker-list 127.0.0.1:9092 --topic elk-kafka-test 
+# 新开窗口运行消费者，指定同样的topic， 注意替换kafkaIp
+./kafka-console-consumer.sh --bootstrap-server kafkaIp:9092 --topic elk-kafka-test --from-beginning
+</code></pre>
+<ul>
+<li>Elasticsearch 安装</li>
+</ul>
+<pre><code class="language-shell">docker run -d --name elasticsearch --net somenetwork -p 9200:9200 -p 9300:9300 -e &quot;discovery.type=single-node&quot; elasticsearch:6.8.4
+</code></pre>
+<p>验证 curl http://localhost:9200<br>
+<img src="https://xxliud.github.io/post-images/1592915628111.jpg" alt="" loading="lazy"></p>
+<ul>
+<li>Kibana 安装</li>
+</ul>
+<pre><code class="language-shell">docker run -d --name kibana --net somenetwork -p 5601:5601 kibana:6.8.4
+</code></pre>
+<p>验证 浏览器访问 http://localhost:5601<br>
+<img src="https://xxliud.github.io/post-images/1592915675748.jpg" alt="" loading="lazy"></p>
+<ul>
+<li>Logstash 安装<br>
+vim vim logstash.conf/logstash.conf</li>
+</ul>
+<pre><code class="language-shell">input {
+   kafka {
+     bootstrap_servers =&gt; [&quot;kafka:9092&quot;]
+     auto_offset_reset =&gt; &quot;latest&quot;
+     consumer_threads =&gt; 5
+     decorate_events =&gt; true
+     group_id =&gt; &quot;elk&quot;
+     topics =&gt; [&quot;elk_kafka_test&quot;]
+     type =&gt; &quot;bhy&quot;
+     codec =&gt; json {
+             charset =&gt; &quot;UTF-8&quot;
+     }
+   }
+}
+
+output {
+   stdout {}
+   elasticsearch {
+     hosts =&gt; [&quot;elasticsearch:9200&quot;]
+     index =&gt; &quot;test-elk-%{+YYYY.MM.dd}&quot;
+   }
+}
+</code></pre>
+<pre><code class="language-shell">docker run -it -d -p 5044:5044 --name logstash \
+--net somenetwork --link kafka --link elasticsearch \
+-v c:/usr/share/pipeline logstash:6.8.4
+</code></pre>
+<ul>
+<li>FileBeat 配置监听<br>
+编辑filebeat.yml</li>
+</ul>
+<pre><code class="language-shell">filebeat.inputs:
+- type: log
+  enabled: true
+  paths:
+    - /data/log/*.log
+  fields:
+    docType: sys-log
+
+output.kafka:
+  hosts: [&quot;kafkaIp:9092&quot;]
+  topic: &quot;elk_kafka_test&quot;
+</code></pre>
+<p>启动filebeat</p>
+<pre><code class="language-shell">./filebeat -c filebeat.yml -e
+</code></pre>
+<p>在/data/log/目录下变更日志文件，filebeat监听到变化，将日志在kafka中生产待logstash进行消费，在logstash容器内可以看到日志转换成json格式的数据存储到logstash里<br>
+<img src="https://xxliud.github.io/post-images/1592915981638.jpg" alt="" loading="lazy"><br>
+在kibana中查看<br>
+<img src="https://xxliud.github.io/post-images/1592915998023.jpg" alt="" loading="lazy"><br>
+至此ELK搭建完成</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Hello Gridea]]></title>
         <id>https://xxliud.github.io/post/hello-gridea/</id>
