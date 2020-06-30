@@ -7,7 +7,7 @@
 <meta name="description" content="念念不忘，必有回响">
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<link rel="shortcut icon" href="https://xxliud.github.io/favicon.ico?v=1593524852593">
+<link rel="shortcut icon" href="https://xxliud.github.io/favicon.ico?v=1593524982723">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 <link rel="stylesheet" href="https://unpkg.com/papercss@1.6.1/dist/paper.min.css" />
@@ -85,11 +85,11 @@
             <p class="article-meta">
               2020-06-30
               
-                <a href="https://xxliud.github.io/tag/CyR9E-50J/" class="badge warning">
+                <a href="https://xxliud.github.io/tag/CyR9E-50J/" class="badge success">
                   vuex
                 </a>
               
-                <a href="https://xxliud.github.io/tag/jG3QY4dFRq/" class="badge secondary">
+                <a href="https://xxliud.github.io/tag/jG3QY4dFRq/" class="badge ">
                   store
                 </a>
               
@@ -257,7 +257,7 @@ export default {
 <li>index.js 定义store实例</li>
 </ul>
 <pre><code class="language-javascript"> // '@/store/index.js'
- import Vue from 'vue';
+import Vue from 'vue';
 import Vuex from 'vuex';
 import mutations from '@/store/mutations';
 import user from './modules/user.js'
@@ -388,59 +388,59 @@ export default {
 <li>vue中如何酸爽的使用？</li>
 </ul>
 <ol>
-<li>获取state属性<pre><code class="language-javascript"></code></pre>
-</li>
+<li>获取state属性</li>
 </ol>
-<p>export default {<br>
-name: 'myTest',<br>
-components: {},<br>
-data() {<br>
-return {<br>
-token: this.$store.state.token   // 粗暴方法<br>
-};<br>
-},<br>
-computed: {<br>
-...mapState({<br>
-count: state =&gt; state.count   // 优雅方法<br>
-})<br>
-}</p>
-<pre><code>2. 执行mutations
-```javascript
-mounted() {
- this.changeUserName(&quot;zcbb...2017&quot;);  // 优雅方法
- this.$store.user.commit(&quot;SAVE_USER_USERNAME&quot;, &quot;zcbb...2015&quot;);  // 粗暴方法
-},
-watch: {},
-created() {},
-methods: {
- ...mapMutations({
-   changeUserName: &quot;user/SAVE_USER_USERNAME&quot;
- })
+<pre><code class="language-javascript">export default {
+  name: 'myTest',
+  components: {},
+  data() {
+    return {
+      token: this.$store.state.token   // 粗暴方法
+    };
+  },
+  computed: {
+    ...mapState({
+      count: state =&gt; state.count   // 优雅方法
+    })
+  }
+</code></pre>
+<ol>
+<li>执行mutations</li>
+</ol>
+<pre><code class="language-javascript">mounted() {
+    this.changeUserName(&quot;zcbb...2017&quot;);  // 优雅方法
+    this.$store.user.commit(&quot;SAVE_USER_USERNAME&quot;, &quot;zcbb...2015&quot;);  // 粗暴方法
+  },
+  watch: {},
+  created() {},
+  methods: {
+    ...mapMutations({
+      changeUserName: &quot;user/SAVE_USER_USERNAME&quot;
+    })
 }
 </code></pre>
 <ol start="3">
-<li>执行actions<pre><code class="language-javascript"></code></pre>
-</li>
+<li>执行actions</li>
 </ol>
-<p>mounted() {<br>
-this.actionUserInfo({         // 优雅方法<br>
-&quot;mail&quot;: &quot;visir.liu@qq.com&quot;,<br>
-&quot;phone&quot;: &quot;17694806300&quot;<br>
-});<br>
-this.$store.user.dispath(&quot;COMPUTED_INFO&quot;, {     // 粗暴方法<br>
-&quot;mail&quot;: &quot;visir.liu@qq.com&quot;,<br>
-&quot;phone&quot;: &quot;17694806300&quot;<br>
-})<br>
-},<br>
-watch: {},<br>
-created() {},<br>
-methods: {<br>
-...mapActions({<br>
-actionUserInfo: &quot;user/COMPUTED_INFO&quot;<br>
-})<br>
-}</p>
-<pre><code>
-至此vuex store介绍完毕..</code></pre>
+<pre><code class="language-javascript">mounted() {
+    this.actionUserInfo({         // 优雅方法   
+      &quot;mail&quot;: &quot;visir.liu@qq.com&quot;,
+      &quot;phone&quot;: &quot;17694806300&quot;
+    });
+    this.$store.user.dispath(&quot;COMPUTED_INFO&quot;, {     // 粗暴方法
+      &quot;mail&quot;: &quot;visir.liu@qq.com&quot;,
+      &quot;phone&quot;: &quot;17694806300&quot;
+    })
+  },
+watch: {},
+created() {},
+methods: {
+...mapActions({
+    actionUserInfo: &quot;user/COMPUTED_INFO&quot;
+    })
+}
+</code></pre>
+<p>至此vuex store介绍完毕..</p>
 
             </div>
           </article>
@@ -464,7 +464,7 @@ actionUserInfo: &quot;user/COMPUTED_INFO&quot;<br>
 
       <div class="sm-12 md-4 col sidebar">
   <div class="paper info-container">
-    <img src="https://xxliud.github.io/images/avatar.png?v=1593524852593" class="no-responsive avatar">
+    <img src="https://xxliud.github.io/images/avatar.png?v=1593524982723" class="no-responsive avatar">
     <div class="text-muted">念念不忘，必有回响</div>
     <div class="social-container">
       
@@ -562,19 +562,19 @@ actionUserInfo: &quot;user/COMPUTED_INFO&quot;<br>
           vuex
         </a>
       
-        <a href="https://xxliud.github.io/tag/jG3QY4dFRq/" class="badge secondary">
+        <a href="https://xxliud.github.io/tag/jG3QY4dFRq/" class="badge success">
           store
         </a>
       
-        <a href="https://xxliud.github.io/tag/tB284FGAZ/" class="badge ">
+        <a href="https://xxliud.github.io/tag/tB284FGAZ/" class="badge warning">
           vue
         </a>
       
-        <a href="https://xxliud.github.io/tag/guz4RVyTI/" class="badge warning">
+        <a href="https://xxliud.github.io/tag/guz4RVyTI/" class="badge secondary">
           gray
         </a>
       
-        <a href="https://xxliud.github.io/tag/7_qXOjqqva/" class="badge ">
+        <a href="https://xxliud.github.io/tag/7_qXOjqqva/" class="badge secondary">
           kubernetes
         </a>
       
@@ -586,35 +586,35 @@ actionUserInfo: &quot;user/COMPUTED_INFO&quot;<br>
           blue
         </a>
       
-        <a href="https://xxliud.github.io/tag/NmrxowzWRm/" class="badge secondary">
+        <a href="https://xxliud.github.io/tag/NmrxowzWRm/" class="badge success">
           green
         </a>
       
-        <a href="https://xxliud.github.io/tag/l_Dflz6PnD/" class="badge ">
+        <a href="https://xxliud.github.io/tag/l_Dflz6PnD/" class="badge success">
           elk
         </a>
       
-        <a href="https://xxliud.github.io/tag/PmvrVDhpM/" class="badge warning">
+        <a href="https://xxliud.github.io/tag/PmvrVDhpM/" class="badge success">
           kafka
         </a>
       
-        <a href="https://xxliud.github.io/tag/v-M3DeXz83/" class="badge success">
+        <a href="https://xxliud.github.io/tag/v-M3DeXz83/" class="badge secondary">
           zookerper
         </a>
       
-        <a href="https://xxliud.github.io/tag/IjQfyISzV-/" class="badge ">
+        <a href="https://xxliud.github.io/tag/IjQfyISzV-/" class="badge secondary">
           mongo
         </a>
       
-        <a href="https://xxliud.github.io/tag/OG87VxQwT/" class="badge warning">
+        <a href="https://xxliud.github.io/tag/OG87VxQwT/" class="badge secondary">
           docker
         </a>
       
-        <a href="https://xxliud.github.io/tag/HY3-GaR6fe/" class="badge warning">
+        <a href="https://xxliud.github.io/tag/HY3-GaR6fe/" class="badge ">
           istio
         </a>
       
-        <a href="https://xxliud.github.io/tag/6PcdngTdA/" class="badge ">
+        <a href="https://xxliud.github.io/tag/6PcdngTdA/" class="badge secondary">
           minikube
         </a>
       

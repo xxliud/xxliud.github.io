@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://xxliud.github.io</id>
     <title>Zcbb - Workspace</title>
-    <updated>2020-06-30T13:47:36.536Z</updated>
+    <updated>2020-06-30T13:49:44.450Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://xxliud.github.io"/>
     <link rel="self" href="https://xxliud.github.io/atom.xml"/>
@@ -171,7 +171,7 @@ export default {
 <li>index.js 定义store实例</li>
 </ul>
 <pre><code class="language-javascript"> // '@/store/index.js'
- import Vue from 'vue';
+import Vue from 'vue';
 import Vuex from 'vuex';
 import mutations from '@/store/mutations';
 import user from './modules/user.js'
@@ -302,59 +302,59 @@ export default {
 <li>vue中如何酸爽的使用？</li>
 </ul>
 <ol>
-<li>获取state属性<pre><code class="language-javascript"></code></pre>
-</li>
+<li>获取state属性</li>
 </ol>
-<p>export default {<br>
-name: 'myTest',<br>
-components: {},<br>
-data() {<br>
-return {<br>
-token: this.$store.state.token   // 粗暴方法<br>
-};<br>
-},<br>
-computed: {<br>
-...mapState({<br>
-count: state =&gt; state.count   // 优雅方法<br>
-})<br>
-}</p>
-<pre><code>2. 执行mutations
-```javascript
-mounted() {
- this.changeUserName(&quot;zcbb...2017&quot;);  // 优雅方法
- this.$store.user.commit(&quot;SAVE_USER_USERNAME&quot;, &quot;zcbb...2015&quot;);  // 粗暴方法
-},
-watch: {},
-created() {},
-methods: {
- ...mapMutations({
-   changeUserName: &quot;user/SAVE_USER_USERNAME&quot;
- })
+<pre><code class="language-javascript">export default {
+  name: 'myTest',
+  components: {},
+  data() {
+    return {
+      token: this.$store.state.token   // 粗暴方法
+    };
+  },
+  computed: {
+    ...mapState({
+      count: state =&gt; state.count   // 优雅方法
+    })
+  }
+</code></pre>
+<ol>
+<li>执行mutations</li>
+</ol>
+<pre><code class="language-javascript">mounted() {
+    this.changeUserName(&quot;zcbb...2017&quot;);  // 优雅方法
+    this.$store.user.commit(&quot;SAVE_USER_USERNAME&quot;, &quot;zcbb...2015&quot;);  // 粗暴方法
+  },
+  watch: {},
+  created() {},
+  methods: {
+    ...mapMutations({
+      changeUserName: &quot;user/SAVE_USER_USERNAME&quot;
+    })
 }
 </code></pre>
 <ol start="3">
-<li>执行actions<pre><code class="language-javascript"></code></pre>
-</li>
+<li>执行actions</li>
 </ol>
-<p>mounted() {<br>
-this.actionUserInfo({         // 优雅方法<br>
-&quot;mail&quot;: &quot;visir.liu@qq.com&quot;,<br>
-&quot;phone&quot;: &quot;17694806300&quot;<br>
-});<br>
-this.$store.user.dispath(&quot;COMPUTED_INFO&quot;, {     // 粗暴方法<br>
-&quot;mail&quot;: &quot;visir.liu@qq.com&quot;,<br>
-&quot;phone&quot;: &quot;17694806300&quot;<br>
-})<br>
-},<br>
-watch: {},<br>
-created() {},<br>
-methods: {<br>
-...mapActions({<br>
-actionUserInfo: &quot;user/COMPUTED_INFO&quot;<br>
-})<br>
-}</p>
-<pre><code>
-至此vuex store介绍完毕..</code></pre>
+<pre><code class="language-javascript">mounted() {
+    this.actionUserInfo({         // 优雅方法   
+      &quot;mail&quot;: &quot;visir.liu@qq.com&quot;,
+      &quot;phone&quot;: &quot;17694806300&quot;
+    });
+    this.$store.user.dispath(&quot;COMPUTED_INFO&quot;, {     // 粗暴方法
+      &quot;mail&quot;: &quot;visir.liu@qq.com&quot;,
+      &quot;phone&quot;: &quot;17694806300&quot;
+    })
+  },
+watch: {},
+created() {},
+methods: {
+...mapActions({
+    actionUserInfo: &quot;user/COMPUTED_INFO&quot;
+    })
+}
+</code></pre>
+<p>至此vuex store介绍完毕..</p>
 ]]></content>
     </entry>
     <entry>
