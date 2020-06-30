@@ -7,7 +7,7 @@
 <meta name="description" content="念念不忘，必有回响">
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<link rel="shortcut icon" href="https://xxliud.github.io/favicon.ico?v=1593523342243">
+<link rel="shortcut icon" href="https://xxliud.github.io/favicon.ico?v=1593524852593">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 <link rel="stylesheet" href="https://unpkg.com/papercss@1.6.1/dist/paper.min.css" />
@@ -85,11 +85,11 @@
             <p class="article-meta">
               2020-06-30
               
-                <a href="https://xxliud.github.io/tag/CyR9E-50J/" class="badge secondary">
+                <a href="https://xxliud.github.io/tag/CyR9E-50J/" class="badge warning">
                   vuex
                 </a>
               
-                <a href="https://xxliud.github.io/tag/jG3QY4dFRq/" class="badge ">
+                <a href="https://xxliud.github.io/tag/jG3QY4dFRq/" class="badge secondary">
                   store
                 </a>
               
@@ -238,9 +238,209 @@ export default {
   }
 }
 </code></pre>
-<h1 id="actions和mutations的区别">actions和mutations的区别：</h1>
-<p>1.Actions 提交的是 mutations，而不是直接变更状态。也就是说，actions会通过mutations，让mutations帮他提交数据的变更。<br>
+<p>💡actions和mutations的区别<br>
+1.Actions 提交的是 mutations，而不是直接变更状态。也就是说，actions会通过mutations，让mutations帮他提交数据的变更。<br>
 2.Action 可以包含任意异步操作。</p>
+<h1 id="store-分层">Store 分层</h1>
+<p>分享一下我项目中store的层级关系<br>
+<img src="https://xxliud.github.io/post-images/1593523832808.png" alt="" loading="lazy"></p>
+<pre><code class="language-shell">-- store
+--- modules  # 模块化
+---- user.js   # store.user
+--- index.js   # store实例
+--- actions_type.js   # actons type list
+--- mutations_type.js  # mutations type list
+--- mutations.js   # store -&gt; mutations
+</code></pre>
+<p>项目内并未使用getters，大部分计算属性都放到了vue的computed里了</p>
+<ul>
+<li>index.js 定义store实例</li>
+</ul>
+<pre><code class="language-javascript"> // '@/store/index.js'
+ import Vue from 'vue';
+import Vuex from 'vuex';
+import mutations from '@/store/mutations';
+import user from './modules/user.js'
+
+Vue.use(Vuex);
+
+//=======vuex store start===========
+const store = new Vuex.Store({
+  state: {
+    token: null,
+    count: 0
+  },
+  mutations: mutations,
+  modules: {
+    user
+  }
+});
+//=======vuex store end===========
+export default store
+</code></pre>
+<ul>
+<li>mutations.js 定义模块外state的一些变更方法</li>
+</ul>
+<pre><code class="language-javascript">let mutations = {
+  // 计数器
+  addCount(state, num) {
+    if (num) {
+      state.count += num;
+    }
+  }
+}
+export default mutations
+</code></pre>
+<ul>
+<li>mutations_type.js 定义module里mutations的类别</li>
+</ul>
+<pre><code class="language-javascript">//user.js
+export const SAVE_USER_USERNAME = &quot;SAVE_USER_USERNAME&quot;
+export const SAVE_USER_DISPLAYNAME = &quot;SAVE_USER_DISPLAYNAME&quot;
+export const SAVE_USER_MAIL = &quot;SAVE_USER_MAIL&quot;
+export const SAVE_USER_PHONE = &quot;SAVE_USER_PHONE&quot;
+export const SAVE_USER_ROLE = &quot;SAVE_USER_ROLE&quot;
+export const SAVE_USER_TOKEN = &quot;SAVE_USER_TOKEN&quot;
+</code></pre>
+<ul>
+<li>actions_type.js 定义module里actions的类别</li>
+</ul>
+<pre><code class="language-javascript">//user.js
+export const COMPUTED_INFO = &quot;COMPUTED_INFO&quot;
+</code></pre>
+<ul>
+<li>modules/user.js 定义一个模块user</li>
+</ul>
+<pre><code class="language-javascript">import {
+  GET_USER_MESSAGE,
+  SAVE_USER_USERNAME,
+  SAVE_USER_DISPLAYNAME,
+  SAVE_USER_MAIL,
+  SAVE_USER_PHONE,
+  SAVE_USER_ROLE,
+  SAVE_USER_TOKEN
+} from '@/store/mutations_type.js'
+import {
+  COMPUTED_INFO
+} from '@/store/actions_type.js'
+import axios from 'axios'
+axios.defaults.withCredentials = true;
+import router from '@/router';
+
+const state = {
+  username: '',
+  displayName: '',
+  mail: '',
+  phone: '',
+  role: '',
+  projectTree: '',
+  token: ''
+}
+
+const getters = {
+
+}
+
+const mutations = {
+  [SAVE_USER_TOKEN]: (state, value) =&gt; {
+    state.token = value
+  },
+  [SAVE_USER_USERNAME]: (state, value) =&gt; {
+    state.username = value
+  },
+  [SAVE_USER_DISPLAYNAME]: (state, value) =&gt; {
+    state.displayName = value
+  },
+  [SAVE_USER_MAIL]: (state, value) =&gt; {
+    state.mail = value
+  },
+  [SAVE_USER_PHONE]: (state, value) =&gt; {
+    state.phone = value
+  },
+  [SAVE_USER_ROLE]: (state, value) =&gt; {
+    state.role = value
+  }
+}
+
+const actions = {
+  [COMPUTED_INFO]: ({
+    commit
+  }, params) =&gt; {
+    commit(SAVE_USER_MAIL, params.mail);
+    commit(SAVE_USER_PHONE, params.phone)
+  },
+  getUserInfo({
+    commit
+  }, params) {
+    commit(SAVE_USER_MAIL, params.mail);
+    commit(SAVE_USER_PHONE, params.phone)
+  }
+}
+
+export default {
+  namespaced: true,
+  state,
+  mutations,
+  actions
+}
+</code></pre>
+<ul>
+<li>vue中如何酸爽的使用？</li>
+</ul>
+<ol>
+<li>获取state属性<pre><code class="language-javascript"></code></pre>
+</li>
+</ol>
+<p>export default {<br>
+name: 'myTest',<br>
+components: {},<br>
+data() {<br>
+return {<br>
+token: this.$store.state.token   // 粗暴方法<br>
+};<br>
+},<br>
+computed: {<br>
+...mapState({<br>
+count: state =&gt; state.count   // 优雅方法<br>
+})<br>
+}</p>
+<pre><code>2. 执行mutations
+```javascript
+mounted() {
+ this.changeUserName(&quot;zcbb...2017&quot;);  // 优雅方法
+ this.$store.user.commit(&quot;SAVE_USER_USERNAME&quot;, &quot;zcbb...2015&quot;);  // 粗暴方法
+},
+watch: {},
+created() {},
+methods: {
+ ...mapMutations({
+   changeUserName: &quot;user/SAVE_USER_USERNAME&quot;
+ })
+}
+</code></pre>
+<ol start="3">
+<li>执行actions<pre><code class="language-javascript"></code></pre>
+</li>
+</ol>
+<p>mounted() {<br>
+this.actionUserInfo({         // 优雅方法<br>
+&quot;mail&quot;: &quot;visir.liu@qq.com&quot;,<br>
+&quot;phone&quot;: &quot;17694806300&quot;<br>
+});<br>
+this.$store.user.dispath(&quot;COMPUTED_INFO&quot;, {     // 粗暴方法<br>
+&quot;mail&quot;: &quot;visir.liu@qq.com&quot;,<br>
+&quot;phone&quot;: &quot;17694806300&quot;<br>
+})<br>
+},<br>
+watch: {},<br>
+created() {},<br>
+methods: {<br>
+...mapActions({<br>
+actionUserInfo: &quot;user/COMPUTED_INFO&quot;<br>
+})<br>
+}</p>
+<pre><code>
+至此vuex store介绍完毕..</code></pre>
 
             </div>
           </article>
@@ -264,7 +464,7 @@ export default {
 
       <div class="sm-12 md-4 col sidebar">
   <div class="paper info-container">
-    <img src="https://xxliud.github.io/images/avatar.png?v=1593523342243" class="no-responsive avatar">
+    <img src="https://xxliud.github.io/images/avatar.png?v=1593524852593" class="no-responsive avatar">
     <div class="text-muted">念念不忘，必有回响</div>
     <div class="social-container">
       
@@ -358,27 +558,27 @@ export default {
     </div>
     <div class="row">
       
-        <a href="https://xxliud.github.io/tag/CyR9E-50J/" class="badge success">
+        <a href="https://xxliud.github.io/tag/CyR9E-50J/" class="badge secondary">
           vuex
         </a>
       
-        <a href="https://xxliud.github.io/tag/jG3QY4dFRq/" class="badge ">
+        <a href="https://xxliud.github.io/tag/jG3QY4dFRq/" class="badge secondary">
           store
         </a>
       
-        <a href="https://xxliud.github.io/tag/tB284FGAZ/" class="badge secondary">
+        <a href="https://xxliud.github.io/tag/tB284FGAZ/" class="badge ">
           vue
         </a>
       
-        <a href="https://xxliud.github.io/tag/guz4RVyTI/" class="badge secondary">
+        <a href="https://xxliud.github.io/tag/guz4RVyTI/" class="badge warning">
           gray
         </a>
       
-        <a href="https://xxliud.github.io/tag/7_qXOjqqva/" class="badge success">
+        <a href="https://xxliud.github.io/tag/7_qXOjqqva/" class="badge ">
           kubernetes
         </a>
       
-        <a href="https://xxliud.github.io/tag/av9x9M2mK/" class="badge secondary">
+        <a href="https://xxliud.github.io/tag/av9x9M2mK/" class="badge warning">
           k8s
         </a>
       
@@ -386,27 +586,27 @@ export default {
           blue
         </a>
       
-        <a href="https://xxliud.github.io/tag/NmrxowzWRm/" class="badge success">
+        <a href="https://xxliud.github.io/tag/NmrxowzWRm/" class="badge secondary">
           green
         </a>
       
-        <a href="https://xxliud.github.io/tag/l_Dflz6PnD/" class="badge success">
+        <a href="https://xxliud.github.io/tag/l_Dflz6PnD/" class="badge ">
           elk
         </a>
       
-        <a href="https://xxliud.github.io/tag/PmvrVDhpM/" class="badge ">
+        <a href="https://xxliud.github.io/tag/PmvrVDhpM/" class="badge warning">
           kafka
         </a>
       
-        <a href="https://xxliud.github.io/tag/v-M3DeXz83/" class="badge secondary">
+        <a href="https://xxliud.github.io/tag/v-M3DeXz83/" class="badge success">
           zookerper
         </a>
       
-        <a href="https://xxliud.github.io/tag/IjQfyISzV-/" class="badge warning">
+        <a href="https://xxliud.github.io/tag/IjQfyISzV-/" class="badge ">
           mongo
         </a>
       
-        <a href="https://xxliud.github.io/tag/OG87VxQwT/" class="badge success">
+        <a href="https://xxliud.github.io/tag/OG87VxQwT/" class="badge warning">
           docker
         </a>
       
@@ -414,7 +614,7 @@ export default {
           istio
         </a>
       
-        <a href="https://xxliud.github.io/tag/6PcdngTdA/" class="badge secondary">
+        <a href="https://xxliud.github.io/tag/6PcdngTdA/" class="badge ">
           minikube
         </a>
       
