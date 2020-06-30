@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>K8s- 蓝绿发布 | Zcbb - Workspace</title>
+<title>Vue - Vuex Store专题 | Zcbb - Workspace</title>
 <meta name="description" content="念念不忘，必有回响">
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -81,113 +81,166 @@
       <div class="sm-12 md-8 col">
         <div class="paper">
           <article class="article">
-            <h1>K8s- 蓝绿发布</h1>
+            <h1>Vue - Vuex Store专题</h1>
             <p class="article-meta">
-              2020-06-24
+              2020-06-30
               
-                <a href="https://xxliud.github.io/tag/Iw2xxP0JB/" class="badge success">
-                  blue
+                <a href="https://xxliud.github.io/tag/CyR9E-50J/" class="badge secondary">
+                  vuex
                 </a>
               
-                <a href="https://xxliud.github.io/tag/NmrxowzWRm/" class="badge warning">
-                  green
+                <a href="https://xxliud.github.io/tag/jG3QY4dFRq/" class="badge secondary">
+                  store
                 </a>
               
-                <a href="https://xxliud.github.io/tag/7_qXOjqqva/" class="badge success">
-                  kubernetes
-                </a>
-              
-                <a href="https://xxliud.github.io/tag/av9x9M2mK/" class="badge ">
-                  k8s
+                <a href="https://xxliud.github.io/tag/tB284FGAZ/" class="badge warning">
+                  vue
                 </a>
               
             </p>
             
+              <img src="https://xxliud.github.io/post-images/vue-vuex.png" alt="Vue - Vuex Store专题">
+            
             <div class="post-content">
-              <ul>
-<li>实现原理，多pod，切换service verson指向</li>
-<li>启动两个版本的deployment</li>
+              <h1 id="vuex-store是什么">Vuex Store是什么？</h1>
+<p>vuex store 是vue的状态管理模块，vuex store 是响应式的，当vue组件从store中读取状态（state）时，若store中的状态发生更新时，会及时的响应给其他的组件。<br>
+store 中的四个核心选项:     state mutations  getters  actions</p>
+<h1 id="核心思想">核心思想</h1>
+<ul>
+<li>state<br>
+state是用来存放组件之间共享的数据，一般会在组件的计算属性中获取state的数据。<br>
+调用方法： this.$store.state.[属性name]，只有读属性，没有写属性。</li>
 </ul>
-<pre><code class="language-yaml">--- service 指向v1
-apiVersion: v1
-kind: Service
-metadata:
-  name: demo
-  namespace: default
-  labels:
-    app: demo
-spec:
-  ports:
-    - port: 80
-      targetPort: http
-      protocol: TCP
-      name: http
-  selector:
-    app: demo
-    version: v1
---- depliyment v1
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: demo1-deployment
-  namespace: default
-  labels:
-    app: demo
-    version: v1
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: demo
-      version: v1
-  template:
-    metadata:
-      labels:
-        app: demo
-        version: v1
-    spec:
-      containers:
-      - name: demo1
-        image: database:v0.01
-        ports:
-          - name: http
-            containerPort: 80
-            protocol: TCP
+<pre><code class="language-javascript">//  '@/store/index.js'
+const store = new Vuex.Store({
+  state: {
+    token: null,
+    count: 0
+  },
+  mutations: mutations,
+  modules: {
+    user
+  }
+});
 
---- depliyment v2
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: demo2-deployment
-  namespace: default
-  labels:
-    app: demo
-    version: v2
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: demo
-      version: v2
-  template:
-    metadata:
-      labels:
-        app: demo
-        version: v2
-    spec:
-      containers:
-      - name: demo2
-        image: database:v0.02
-        ports:
-          - name: http
-            containerPort: 80
-            protocol: TCP
+//  '@/pages/myTest/myTest.vue
+export default {
+  name: 'myTest',
+  components: {},
+  data() {
+    return {
+      token: this.$store.state.token
+    };
+  }
+  }
 </code></pre>
 <ul>
-<li>切换入口流量从v1 到 v2</li>
+<li>mutations<br>
+在 Vuex store 中，实际改变 状态(state) 的唯一方式是通过提交(commit) 一个 mutation。<br>
+在组件里提交： this.$store.commit('change', payload)<br>
+mutations下的函数接收state作为参数，接收一个叫做payload（载荷）的东西作为第二个参数，这个东东是用来记录开发者使用该函数的一些信息，比如说提交了什么，提交的东西是用来干什么的，包含多个字段，所以载荷一般是对象。</li>
 </ul>
-<pre><code class="language-shell">kubectl patch service demo -p '{&quot;spec&quot;:{&quot;selector&quot;:{&quot;version&quot;:&quot;v2&quot;}}}'
+<pre><code class="language-javascript">//  '@/store/index.js'
+const store = new Vuex.Store({
+  state: {
+    token: null,
+    count: 0
+  },
+  mutations: mutations,
+  modules: {
+    user
+  }
+});
+
+//  '@/store/mutations.js
+let mutations = {
+  // 计数器
+  addCount(state, num) {
+    if (num) {
+      state.count += num;
+    }
+  }
+}
+
+//  '@/pages/myTest/myTest.vue'
+export default {
+  computed: {
+    this.$store.commit('addCount', 2)
+  }
+}
 </code></pre>
+<ul>
+<li>getters<br>
+getters可以看成是store的计算属性。<br>
+getters下的函数接收state作为第一个参数。getters可以过滤组件中的数据，过滤的数据会存放到$store.getters对象中。</li>
+</ul>
+<pre><code class="language-javascript">//  '@/store/index.js'
+const store = new Vuex.Store({
+  state: {
+    token: null,
+    count: 0
+  },
+  mutations: mutations,
+  getters: getters,
+  modules: {
+    user
+  }
+});
+
+//  '@/store/getters.js
+let getters = {
+  // 计数器
+  getCount(state) {
+      return state.count
+  }
+}
+
+//  '@/pages/myTest/myTest.vue'
+export default {
+  data: {
+      count: this.$store.state.getount();
+  }
+}
+</code></pre>
+<ul>
+<li>actions<br>
+actions：类似于mutation ，但是mutations只能处理同步函数，而actions则是可以处理任何的异步操作。</li>
+</ul>
+<pre><code class="language-javascript">//  '@/store/index.js'
+const store = new Vuex.Store({
+  state: {
+    token: null,
+    count: 0
+  },
+  mutations: mutations,
+  getters: getters,
+  actions: actions,
+  modules: {
+    user
+  }
+});
+
+//  '@/store/action.js
+let actions = {
+  // 计数器
+  getInfo({
+    commit
+  }, params) {
+    commit('updateMail', params.mail);
+    commit('updatePhone', params.phone)
+  }
+}
+
+//  '@/pages/myTest/myTest.vue'
+export default {
+  computed: {
+    this.$store.dispath('getInfo', {'mail': '327xxx@qq.com', 'phone': '139xxxxxxx'})
+  }
+}
+</code></pre>
+<h1 id="actions和mutations的区别">actions和mutations的区别：</h1>
+<p>1.Actions 提交的是 mutations，而不是直接变更状态。也就是说，actions会通过mutations，让mutations帮他提交数据的变更。<br>
+2.Action 可以包含任意异步操作。</p>
 
             </div>
           </article>
@@ -198,9 +251,9 @@ spec:
               <div class="next">
                 下一篇
               </div>
-              <a href="https://xxliud.github.io/post/k8s-elk/">
+              <a href="https://xxliud.github.io/post/vue-knowledge/">
                 <h3 class="post-title">
-                  K8s - 安装ELK
+                  Vue - 知识点大汇总
                 </h3>
               </a>
             </div>
@@ -305,19 +358,19 @@ spec:
     </div>
     <div class="row">
       
-        <a href="https://xxliud.github.io/tag/CyR9E-50J/" class="badge secondary">
+        <a href="https://xxliud.github.io/tag/CyR9E-50J/" class="badge ">
           vuex
         </a>
       
-        <a href="https://xxliud.github.io/tag/jG3QY4dFRq/" class="badge ">
+        <a href="https://xxliud.github.io/tag/jG3QY4dFRq/" class="badge secondary">
           store
         </a>
       
-        <a href="https://xxliud.github.io/tag/tB284FGAZ/" class="badge warning">
+        <a href="https://xxliud.github.io/tag/tB284FGAZ/" class="badge secondary">
           vue
         </a>
       
-        <a href="https://xxliud.github.io/tag/guz4RVyTI/" class="badge ">
+        <a href="https://xxliud.github.io/tag/guz4RVyTI/" class="badge success">
           gray
         </a>
       
@@ -325,31 +378,31 @@ spec:
           kubernetes
         </a>
       
-        <a href="https://xxliud.github.io/tag/av9x9M2mK/" class="badge success">
+        <a href="https://xxliud.github.io/tag/av9x9M2mK/" class="badge secondary">
           k8s
         </a>
       
-        <a href="https://xxliud.github.io/tag/Iw2xxP0JB/" class="badge success">
+        <a href="https://xxliud.github.io/tag/Iw2xxP0JB/" class="badge ">
           blue
         </a>
       
-        <a href="https://xxliud.github.io/tag/NmrxowzWRm/" class="badge warning">
+        <a href="https://xxliud.github.io/tag/NmrxowzWRm/" class="badge secondary">
           green
         </a>
       
-        <a href="https://xxliud.github.io/tag/l_Dflz6PnD/" class="badge ">
+        <a href="https://xxliud.github.io/tag/l_Dflz6PnD/" class="badge warning">
           elk
         </a>
       
-        <a href="https://xxliud.github.io/tag/PmvrVDhpM/" class="badge ">
+        <a href="https://xxliud.github.io/tag/PmvrVDhpM/" class="badge success">
           kafka
         </a>
       
-        <a href="https://xxliud.github.io/tag/v-M3DeXz83/" class="badge ">
+        <a href="https://xxliud.github.io/tag/v-M3DeXz83/" class="badge secondary">
           zookerper
         </a>
       
-        <a href="https://xxliud.github.io/tag/IjQfyISzV-/" class="badge success">
+        <a href="https://xxliud.github.io/tag/IjQfyISzV-/" class="badge ">
           mongo
         </a>
       
@@ -357,7 +410,7 @@ spec:
           docker
         </a>
       
-        <a href="https://xxliud.github.io/tag/HY3-GaR6fe/" class="badge secondary">
+        <a href="https://xxliud.github.io/tag/HY3-GaR6fe/" class="badge success">
           istio
         </a>
       

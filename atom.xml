@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://xxliud.github.io</id>
     <title>Zcbb - Workspace</title>
-    <updated>2020-06-24T14:34:44.908Z</updated>
+    <updated>2020-06-30T13:19:15.877Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://xxliud.github.io"/>
     <link rel="self" href="https://xxliud.github.io/atom.xml"/>
@@ -11,14 +11,159 @@
     <icon>https://xxliud.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, Zcbb - Workspace</rights>
     <entry>
+        <title type="html"><![CDATA[Vue - Vuex Store专题]]></title>
+        <id>https://xxliud.github.io/post/vue-vuex/</id>
+        <link href="https://xxliud.github.io/post/vue-vuex/">
+        </link>
+        <updated>2020-06-30T12:11:13.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="vuex-store是什么">Vuex Store是什么？</h1>
+<p>vuex store 是vue的状态管理模块，vuex store 是响应式的，当vue组件从store中读取状态（state）时，若store中的状态发生更新时，会及时的响应给其他的组件。<br>
+store 中的四个核心选项:     state mutations  getters  actions</p>
+<h1 id="核心思想">核心思想</h1>
+<ul>
+<li>state<br>
+state是用来存放组件之间共享的数据，一般会在组件的计算属性中获取state的数据。<br>
+调用方法： this.$store.state.[属性name]，只有读属性，没有写属性。</li>
+</ul>
+<pre><code class="language-javascript">//  '@/store/index.js'
+const store = new Vuex.Store({
+  state: {
+    token: null,
+    count: 0
+  },
+  mutations: mutations,
+  modules: {
+    user
+  }
+});
+
+//  '@/pages/myTest/myTest.vue
+export default {
+  name: 'myTest',
+  components: {},
+  data() {
+    return {
+      token: this.$store.state.token
+    };
+  }
+  }
+</code></pre>
+<ul>
+<li>mutations<br>
+在 Vuex store 中，实际改变 状态(state) 的唯一方式是通过提交(commit) 一个 mutation。<br>
+在组件里提交： this.$store.commit('change', payload)<br>
+mutations下的函数接收state作为参数，接收一个叫做payload（载荷）的东西作为第二个参数，这个东东是用来记录开发者使用该函数的一些信息，比如说提交了什么，提交的东西是用来干什么的，包含多个字段，所以载荷一般是对象。</li>
+</ul>
+<pre><code class="language-javascript">//  '@/store/index.js'
+const store = new Vuex.Store({
+  state: {
+    token: null,
+    count: 0
+  },
+  mutations: mutations,
+  modules: {
+    user
+  }
+});
+
+//  '@/store/mutations.js
+let mutations = {
+  // 计数器
+  addCount(state, num) {
+    if (num) {
+      state.count += num;
+    }
+  }
+}
+
+//  '@/pages/myTest/myTest.vue'
+export default {
+  computed: {
+    this.$store.commit('addCount', 2)
+  }
+}
+</code></pre>
+<ul>
+<li>getters<br>
+getters可以看成是store的计算属性。<br>
+getters下的函数接收state作为第一个参数。getters可以过滤组件中的数据，过滤的数据会存放到$store.getters对象中。</li>
+</ul>
+<pre><code class="language-javascript">//  '@/store/index.js'
+const store = new Vuex.Store({
+  state: {
+    token: null,
+    count: 0
+  },
+  mutations: mutations,
+  getters: getters,
+  modules: {
+    user
+  }
+});
+
+//  '@/store/getters.js
+let getters = {
+  // 计数器
+  getCount(state) {
+      return state.count
+  }
+}
+
+//  '@/pages/myTest/myTest.vue'
+export default {
+  data: {
+      count: this.$store.state.getount();
+  }
+}
+</code></pre>
+<ul>
+<li>actions<br>
+actions：类似于mutation ，但是mutations只能处理同步函数，而actions则是可以处理任何的异步操作。</li>
+</ul>
+<pre><code class="language-javascript">//  '@/store/index.js'
+const store = new Vuex.Store({
+  state: {
+    token: null,
+    count: 0
+  },
+  mutations: mutations,
+  getters: getters,
+  actions: actions,
+  modules: {
+    user
+  }
+});
+
+//  '@/store/action.js
+let actions = {
+  // 计数器
+  getInfo({
+    commit
+  }, params) {
+    commit('updateMail', params.mail);
+    commit('updatePhone', params.phone)
+  }
+}
+
+//  '@/pages/myTest/myTest.vue'
+export default {
+  computed: {
+    this.$store.dispath('getInfo', {'mail': '327xxx@qq.com', 'phone': '139xxxxxxx'})
+  }
+}
+</code></pre>
+<h1 id="actions和mutations的区别">actions和mutations的区别：</h1>
+<p>1.Actions 提交的是 mutations，而不是直接变更状态。也就是说，actions会通过mutations，让mutations帮他提交数据的变更。<br>
+2.Action 可以包含任意异步操作。</p>
+]]></content>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[Vue - 知识点大汇总]]></title>
         <id>https://xxliud.github.io/post/vue-knowledge/</id>
         <link href="https://xxliud.github.io/post/vue-knowledge/">
         </link>
         <updated>2020-06-24T14:29:12.000Z</updated>
-        <content type="html"><![CDATA[<ul>
-<li>Knowledge</li>
-</ul>
+        <content type="html"><![CDATA[<p>[ * ] <a href="https://xxliud.github.io/post/vuex-store" title="vuex-store">vuex-store</a></p>
 ]]></content>
     </entry>
     <entry>
