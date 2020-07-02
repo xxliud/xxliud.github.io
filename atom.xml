@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://xxliud.github.io</id>
     <title>Zcbb - Workspace</title>
-    <updated>2020-07-02T11:04:17.945Z</updated>
+    <updated>2020-07-02T11:12:14.615Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://xxliud.github.io"/>
     <link rel="self" href="https://xxliud.github.io/atom.xml"/>
@@ -10,6 +10,24 @@
     <logo>https://xxliud.github.io/images/avatar.png</logo>
     <icon>https://xxliud.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, Zcbb - Workspace</rights>
+    <entry>
+        <title type="html"><![CDATA[Vue.Js - Service]]></title>
+        <id>https://xxliud.github.io/post/vue-service/</id>
+        <link href="https://xxliud.github.io/post/vue-service/">
+        </link>
+        <updated>2020-07-02T11:08:20.000Z</updated>
+        <content type="html"><![CDATA[<figure data-type="image" tabindex="1"><img src="https://xxliud.github.io/post-images/1593688314406.jpeg" alt="" loading="lazy"></figure>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Vue.Js - Service]]></title>
+        <id>https://xxliud.github.io/post/vuejs-service/</id>
+        <link href="https://xxliud.github.io/post/vuejs-service/">
+        </link>
+        <updated>2020-07-02T11:08:20.000Z</updated>
+        <content type="html"><![CDATA[<figure data-type="image" tabindex="1"><img src="https://xxliud.github.io/post-images/1593688314406.jpeg" alt="" loading="lazy"></figure>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Vue.Js - Router专题]]></title>
         <id>https://xxliud.github.io/post/vue-router/</id>
@@ -536,8 +554,9 @@ methods: {
         <link href="https://xxliud.github.io/post/vue-knowledge/">
         </link>
         <updated>2020-06-24T14:29:12.000Z</updated>
-        <content type="html"><![CDATA[<p>[ * ] <a href="https://xxliud.github.io/post/vue-vuex" title="vue-store">vue-store</a><br>
-[ * ] <a href="https://xxliud.github.io/post/vue-router" title="vue-router">vue-router</a></p>
+        <content type="html"><![CDATA[<p>[ * ] <a href="https://xxliud.github.io/post/vue-vuex" title="vue-store">vue-store</a> .... store分层<br>
+[ * ] <a href="https://xxliud.github.io/post/vue-router" title="vue-router">vue-router</a> .... router基本概念<br>
+[ * ] <a href="https://xxliud.github.io/post/vue-service" title="vue-service">vue-proxy-service</a> .... 独立的请求层</p>
 ]]></content>
     </entry>
     <entry>
@@ -1113,66 +1132,6 @@ spec:
   selector:
     app: my-mongo
 </code></pre>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[K8s - 学习资料汇总]]></title>
-        <id>https://xxliud.github.io/post/k8s/</id>
-        <link href="https://xxliud.github.io/post/k8s/">
-        </link>
-        <updated>2020-06-23T12:52:02.000Z</updated>
-        <content type="html"><![CDATA[<p>[ * ] <a href="https://xxliud.github.io/post/minikube-install" title="minikube-install">Mac Install Minikube</a><br>
-[ * ] <a href="https://xxliud.github.io/post/k8s-mongo" title="k8s-mongo">K8s Install Mongo</a><br>
-[ * ] <a href="https://xxliud.github.io/post/k8s-zk-kafka" title="k8s-zk-kafka">K8s Install Zookerper Kafka</a><br>
-[ * ] <a href="https://xxliud.github.io/post/k8s-elk" title="k8s-elk">K8s Install ELK</a><br>
-[ * ] <a href="https://xxliud.github.io/post/k8s-istio" title="k8s-istio">Install Istio</a><br>
-[ * ] <a href="https://xxliud.github.io/post/k8s-blue-green" title="k8s-blue-green">K8s Bule Green Release</a><br>
-[ * ] <a href="https://xxliud.github.io/post/k8s-gray" title="k8s-gary">K8s Gray Release</a></p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[K8s - Minikube安装篇]]></title>
-        <id>https://xxliud.github.io/post/minikube-install/</id>
-        <link href="https://xxliud.github.io/post/minikube-install/">
-        </link>
-        <updated>2020-06-23T12:52:02.000Z</updated>
-        <content type="html"><![CDATA[<h2 id="什么是k8s">什么是k8s</h2>
-<p>我们知道，我们可以将项目制作成docker镜像，然后利用docker去部署我们的项目，这样可以解决很多服务器环境所带来的问题；<br>
-但是容器多了，容器与容器之间就需要访问，之间就需要网络配置等等，从而就有了docker-compose；<br>
-但是当我们的服务进行升级，或者服务需要进行调度，扩容等等，这个时候就需要一个大管家来管所有的东西；<br>
-这个大管家就是 - Kubernetes</p>
-<h2 id="mac安装kubernetes单节点minikube">mac安装kubernetes单节点minikube</h2>
-<ul>
-<li>安装kubectl 核心操作管理命令</li>
-</ul>
-<pre><code class="language-shell">brew install kubernetes-cli
-</code></pre>
-<ul>
-<li>安装minikube</li>
-</ul>
-<pre><code class="language-shell">brew cask install minikube
-</code></pre>
-<ul>
-<li>启动minikube</li>
-</ul>
-<pre><code class="language-shell">minikube start -p docker镜像仓库
-Starting local Kubernetes v1.10.0 cluster...
-Starting VM...
-Getting VM IP address...
-Moving files into cluster...
-Setting up certs...
-Connecting to cluster...
-Setting up kubeconfig...
-Starting cluster components...
-Kubectl is now configured to use the cluster.
-Loading cached images from config file.
-</code></pre>
-<ul>
-<li>查看kubernetes的dashboard</li>
-</ul>
-<pre><code class="language-shell">minikube dashboard
-</code></pre>
-<p>至此minikube搭建完成</p>
 ]]></content>
     </entry>
 </feed>
