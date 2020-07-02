@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://xxliud.github.io</id>
     <title>Zcbb - Workspace</title>
-    <updated>2020-07-02T11:12:14.615Z</updated>
+    <updated>2020-07-02T11:13:14.180Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://xxliud.github.io"/>
     <link rel="self" href="https://xxliud.github.io/atom.xml"/>
@@ -11,18 +11,9 @@
     <icon>https://xxliud.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, Zcbb - Workspace</rights>
     <entry>
-        <title type="html"><![CDATA[Vue.Js - Service]]></title>
+        <title type="html"><![CDATA[Vue.Js - Service专题]]></title>
         <id>https://xxliud.github.io/post/vue-service/</id>
         <link href="https://xxliud.github.io/post/vue-service/">
-        </link>
-        <updated>2020-07-02T11:08:20.000Z</updated>
-        <content type="html"><![CDATA[<figure data-type="image" tabindex="1"><img src="https://xxliud.github.io/post-images/1593688314406.jpeg" alt="" loading="lazy"></figure>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Vue.Js - Service]]></title>
-        <id>https://xxliud.github.io/post/vuejs-service/</id>
-        <link href="https://xxliud.github.io/post/vuejs-service/">
         </link>
         <updated>2020-07-02T11:08:20.000Z</updated>
         <content type="html"><![CDATA[<figure data-type="image" tabindex="1"><img src="https://xxliud.github.io/post-images/1593688314406.jpeg" alt="" loading="lazy"></figure>
@@ -1132,6 +1123,21 @@ spec:
   selector:
     app: my-mongo
 </code></pre>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[K8s - 学习资料汇总]]></title>
+        <id>https://xxliud.github.io/post/k8s/</id>
+        <link href="https://xxliud.github.io/post/k8s/">
+        </link>
+        <updated>2020-06-23T12:52:02.000Z</updated>
+        <content type="html"><![CDATA[<p>[ * ] <a href="https://xxliud.github.io/post/minikube-install" title="minikube-install">Mac Install Minikube</a><br>
+[ * ] <a href="https://xxliud.github.io/post/k8s-mongo" title="k8s-mongo">K8s Install Mongo</a><br>
+[ * ] <a href="https://xxliud.github.io/post/k8s-zk-kafka" title="k8s-zk-kafka">K8s Install Zookerper Kafka</a><br>
+[ * ] <a href="https://xxliud.github.io/post/k8s-elk" title="k8s-elk">K8s Install ELK</a><br>
+[ * ] <a href="https://xxliud.github.io/post/k8s-istio" title="k8s-istio">Install Istio</a><br>
+[ * ] <a href="https://xxliud.github.io/post/k8s-blue-green" title="k8s-blue-green">K8s Bule Green Release</a><br>
+[ * ] <a href="https://xxliud.github.io/post/k8s-gray" title="k8s-gary">K8s Gray Release</a></p>
 ]]></content>
     </entry>
 </feed>
