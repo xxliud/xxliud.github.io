@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>green | Zcbb - Workspace</title>
+<title>Vue - Router专题 | Zcbb - Workspace</title>
 <meta name="description" content="念念不忘，必有回响">
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -23,6 +23,7 @@
 
   </head>
   <body>
+  
     <nav class="navbar border fixed split-nav">
   <div class="nav-brand">
     <h3><a href="https://xxliud.github.io">Zcbb - Workspace</a></h3>
@@ -79,52 +80,105 @@
     <div id="top" class="row site">
       <div class="sm-12 md-8 col">
         <div class="paper">
-          <h2 class="current-tag">标签: green</h2>
-          
-  <article class="article">
-    <h2 class="article-title">
-      <a href="https://xxliud.github.io/post/k8s-blue-green/">K8s- 蓝绿发布</a>
-    </h2>
-    <p class="article-meta">
-      2020-06-24
-      
-        <a href="https://xxliud.github.io/tag/Iw2xxP0JB/" class="badge secondary">
-          blue
-        </a>
-      
-        <a href="https://xxliud.github.io/tag/NmrxowzWRm/" class="badge secondary">
-          green
-        </a>
-      
-        <a href="https://xxliud.github.io/tag/7_qXOjqqva/" class="badge secondary">
-          kubernetes
-        </a>
-      
-        <a href="https://xxliud.github.io/tag/av9x9M2mK/" class="badge success">
-          k8s
-        </a>
-      
-    </p>
-    <p class="text-lead">
-      
-    </p>
-    <div class="row">
-      <a href="https://xxliud.github.io/post/k8s-blue-green/" class="readmore-link">
-        <button>
-          Read More
-        </button>
-      </a>
-    </div>
-  </article>
+          <article class="article">
+            <h1>Vue - Router专题</h1>
+            <p class="article-meta">
+              2020-07-02
+              
+                <a href="https://xxliud.github.io/tag/eGptYzN33/" class="badge success">
+                  router
+                </a>
+              
+                <a href="https://xxliud.github.io/tag/PW7o1lC6Ky/" class="badge success">
+                  route
+                </a>
+              
+                <a href="https://xxliud.github.io/tag/CyR9E-50J/" class="badge success">
+                  vuex
+                </a>
+              
+            </p>
+            
+            <div class="post-content">
+              <h1 id="解读routerindexjs文件">解读router/index.js文件</h1>
+<pre><code class="language-javascript">import Vue from 'vue'
+import Router from 'vue-router'
+import store from '@/store'
+import axios from 'axios'
+import myTest from '@/router/modules/myTest'
 
+axios.defaults.withCredentials = true;
 
+Vue.use(Router)
+
+let router = new Router({
+  routes: [{
+    path: '/',
+    component: resolve =&gt; require(['@/layout.vue'], resolve),
+    redirect: '/myTest',
+    children: [
+      ...myTest
+    ]
+  }, {
+    path: '/login',
+    component: resolve =&gt; require(['@/pages/login.vue'], resolve)
+  }]
+})
+
+router.beforeEach((to, from, next) =&gt; {
+  let isLogin = store.state.token;
+  if (isLogin == null) {
+    console.log(isLogin);
+    if (to.path !== '/login') {
+      return next({
+        path: '/login'
+      });
+    } else {
+      next();
+    }
+  } else {
+    if (to.path === '/login') {
+      return next({
+        path: '/index'
+      });
+    }
+    next();
+  }
+});
+
+//====change page title after route change
+
+router.afterEach((to, from) =&gt; {
+  axios.post(`/api-traceback/api/visitor/insertOne`, {
+    source: &quot;flow&quot;,
+    username: store.state.user.username,
+    url: to.fullPath
+  }).then((response) =&gt; {})
+});
+
+export default router
+</code></pre>
+
+            </div>
+          </article>
         </div>
-        <div class="row flex-edges">
-  
-  
-</div>
-
+        <div class="paper" data-aos="fade-in">
+          
+            <div class="next-post">
+              <div class="next">
+                下一篇
+              </div>
+              <a href="https://xxliud.github.io/post/vue-vuex/">
+                <h3 class="post-title">
+                  Vue - Vuex Store专题
+                </h3>
+              </a>
+            </div>
+          
+        </div>
+        
       </div>
+
       <div class="sm-12 md-4 col sidebar">
   <div class="paper info-container">
     <img src="https://xxliud.github.io/images/avatar.png?v=1593685939142" class="no-responsive avatar">
@@ -223,23 +277,23 @@
     </div>
     <div class="row">
       
-        <a href="https://xxliud.github.io/tag/eGptYzN33/" class="badge ">
+        <a href="https://xxliud.github.io/tag/eGptYzN33/" class="badge warning">
           router
         </a>
       
-        <a href="https://xxliud.github.io/tag/PW7o1lC6Ky/" class="badge ">
+        <a href="https://xxliud.github.io/tag/PW7o1lC6Ky/" class="badge secondary">
           route
         </a>
       
-        <a href="https://xxliud.github.io/tag/CyR9E-50J/" class="badge secondary">
+        <a href="https://xxliud.github.io/tag/CyR9E-50J/" class="badge warning">
           vuex
         </a>
       
-        <a href="https://xxliud.github.io/tag/jG3QY4dFRq/" class="badge secondary">
+        <a href="https://xxliud.github.io/tag/jG3QY4dFRq/" class="badge ">
           store
         </a>
       
-        <a href="https://xxliud.github.io/tag/tB284FGAZ/" class="badge success">
+        <a href="https://xxliud.github.io/tag/tB284FGAZ/" class="badge secondary">
           vue
         </a>
       
@@ -247,7 +301,7 @@
           gray
         </a>
       
-        <a href="https://xxliud.github.io/tag/7_qXOjqqva/" class="badge secondary">
+        <a href="https://xxliud.github.io/tag/7_qXOjqqva/" class="badge success">
           kubernetes
         </a>
       
@@ -259,19 +313,19 @@
           blue
         </a>
       
-        <a href="https://xxliud.github.io/tag/NmrxowzWRm/" class="badge secondary">
+        <a href="https://xxliud.github.io/tag/NmrxowzWRm/" class="badge ">
           green
         </a>
       
-        <a href="https://xxliud.github.io/tag/l_Dflz6PnD/" class="badge ">
+        <a href="https://xxliud.github.io/tag/l_Dflz6PnD/" class="badge warning">
           elk
         </a>
       
-        <a href="https://xxliud.github.io/tag/PmvrVDhpM/" class="badge warning">
+        <a href="https://xxliud.github.io/tag/PmvrVDhpM/" class="badge ">
           kafka
         </a>
       
-        <a href="https://xxliud.github.io/tag/v-M3DeXz83/" class="badge warning">
+        <a href="https://xxliud.github.io/tag/v-M3DeXz83/" class="badge secondary">
           zookerper
         </a>
       
@@ -279,7 +333,7 @@
           mongo
         </a>
       
-        <a href="https://xxliud.github.io/tag/OG87VxQwT/" class="badge success">
+        <a href="https://xxliud.github.io/tag/OG87VxQwT/" class="badge secondary">
           docker
         </a>
       
@@ -287,7 +341,7 @@
           istio
         </a>
       
-        <a href="https://xxliud.github.io/tag/6PcdngTdA/" class="badge secondary">
+        <a href="https://xxliud.github.io/tag/6PcdngTdA/" class="badge warning">
           minikube
         </a>
       
@@ -297,6 +351,7 @@
     Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://xxliud.github.io/atom.xml" target="_blank">RSS</a>
   </div>
 </div>
+
 
     </div>
 
