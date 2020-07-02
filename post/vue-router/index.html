@@ -7,7 +7,7 @@
 <meta name="description" content="念念不忘，必有回响">
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<link rel="shortcut icon" href="https://xxliud.github.io/favicon.ico?v=1593688456180">
+<link rel="shortcut icon" href="https://xxliud.github.io/favicon.ico?v=1593688507547">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 <link rel="stylesheet" href="https://unpkg.com/papercss@1.6.1/dist/paper.min.css" />
@@ -85,15 +85,15 @@
             <p class="article-meta">
               2020-07-02
               
-                <a href="https://xxliud.github.io/tag/eGptYzN33/" class="badge ">
+                <a href="https://xxliud.github.io/tag/eGptYzN33/" class="badge warning">
                   router
                 </a>
               
-                <a href="https://xxliud.github.io/tag/PW7o1lC6Ky/" class="badge warning">
+                <a href="https://xxliud.github.io/tag/PW7o1lC6Ky/" class="badge ">
                   route
                 </a>
               
-                <a href="https://xxliud.github.io/tag/CyR9E-50J/" class="badge secondary">
+                <a href="https://xxliud.github.io/tag/CyR9E-50J/" class="badge ">
                   vuex
                 </a>
               
@@ -256,19 +256,25 @@ from: Route: 当前导航正要离开的路由<br>
 <figure data-type="image" tabindex="1"><img src="https://xxliud.github.io/post-images/1593687646750.webp" alt="" loading="lazy"></figure>
 <ul>
 <li><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>r</mi><mi>o</mi><mi>u</mi><mi>t</mi><mi>e</mi><mi>r</mi><mi mathvariant="normal">对</mi><mi mathvariant="normal">象</mi></mrow><annotation encoding="application/x-tex">router对象
-</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.61508em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord mathdefault">o</span><span class="mord mathdefault">u</span><span class="mord mathdefault">t</span><span class="mord mathdefault">e</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord cjk_fallback">对</span><span class="mord cjk_fallback">象</span></span></span></span>router对象是全局路由的实例，是router构造方法的实例。<br>
-1、push</li>
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.61508em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord mathdefault">o</span><span class="mord mathdefault">u</span><span class="mord mathdefault">t</span><span class="mord mathdefault">e</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord cjk_fallback">对</span><span class="mord cjk_fallback">象</span></span></span></span>router对象是全局路由的实例，是router构造方法的实例。</li>
+</ul>
+<ol>
+<li>push</li>
+</ol>
+<ul>
 <li>字符串this.$router.push('home')</li>
 <li>对象this.$router.push({path:'home'})</li>
 <li>命名的路由this.$router.push({name:'user',params:{userId:123}})</li>
-<li>带查询参数，变成 /register?plan=123this.<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>r</mi><mi>o</mi><mi>u</mi><mi>t</mi><mi>e</mi><mi>r</mi><mi mathvariant="normal">.</mi><mi>p</mi><mi>u</mi><mi>s</mi><mi>h</mi><mo>(</mo><mrow><mi>p</mi><mi>a</mi><mi>t</mi><mi>h</mi><msup><mo>:</mo><mo mathvariant="normal">′</mo></msup><mi>r</mi><mi>e</mi><mi>g</mi><mi>i</mi><mi>s</mi><mi>t</mi><mi>e</mi><msup><mi>r</mi><mo mathvariant="normal">′</mo></msup><mo separator="true">,</mo><mi>q</mi><mi>u</mi><mi>e</mi><mi>r</mi><mi>y</mi><mo>:</mo><mrow><mi>p</mi><mi>l</mi><mi>a</mi><mi>n</mi><msup><mo>:</mo><mo mathvariant="normal">′</mo></msup><mn>12</mn><msup><mn>3</mn><mo mathvariant="normal">′</mo></msup></mrow></mrow><mo>)</mo><mi mathvariant="normal">，</mi><mi>p</mi><mi>u</mi><mi>s</mi><mi>h</mi><mi mathvariant="normal">方</mi><mi mathvariant="normal">法</mi><mi mathvariant="normal">其</mi><mi mathvariant="normal">实</mi><mi mathvariant="normal">和</mi><mo>&lt;</mo><mi>r</mi><mi>o</mi><mi>u</mi><mi>t</mi><mi>e</mi><mi>r</mi><mo>−</mo><mi>l</mi><mi>i</mi><mi>n</mi><mi>k</mi><mo>:</mo><mi>t</mi><mi>o</mi><mo>=</mo><mi mathvariant="normal">&quot;</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">&quot;</mi><mo>&gt;</mo><mi mathvariant="normal">是</mi><mi mathvariant="normal">等</mi><mi mathvariant="normal">同</mi><mi mathvariant="normal">的</mi><mi mathvariant="normal">。</mi><mi mathvariant="normal">注</mi><mi mathvariant="normal">意</mi><mi mathvariant="normal">：</mi><mi>p</mi><mi>u</mi><mi>s</mi><mi>h</mi><mi mathvariant="normal">方</mi><mi mathvariant="normal">法</mi><mi mathvariant="normal">的</mi><mi mathvariant="normal">跳</mi><mi mathvariant="normal">转</mi><mi mathvariant="normal">会</mi><mi mathvariant="normal">向</mi><mi>h</mi><mi>i</mi><mi>s</mi><mi>t</mi><mi>o</mi><mi>r</mi><mi>y</mi><mi mathvariant="normal">栈</mi><mi mathvariant="normal">添</mi><mi mathvariant="normal">加</mi><mi mathvariant="normal">一</mi><mi mathvariant="normal">个</mi><mi mathvariant="normal">新</mi><mi mathvariant="normal">的</mi><mi mathvariant="normal">记</mi><mi mathvariant="normal">录</mi><mi mathvariant="normal">，</mi><mi mathvariant="normal">当</mi><mi mathvariant="normal">我</mi><mi mathvariant="normal">们</mi><mi mathvariant="normal">点</mi><mi mathvariant="normal">击</mi><mi mathvariant="normal">浏</mi><mi mathvariant="normal">览</mi><mi mathvariant="normal">器</mi><mi mathvariant="normal">的</mi><mi mathvariant="normal">返</mi><mi mathvariant="normal">回</mi><mi mathvariant="normal">按</mi><mi mathvariant="normal">钮</mi><mi mathvariant="normal">时</mi><mi mathvariant="normal">可</mi><mi mathvariant="normal">以</mi><mi mathvariant="normal">看</mi><mi mathvariant="normal">到</mi><mi mathvariant="normal">之</mi><mi mathvariant="normal">前</mi><mi mathvariant="normal">的</mi><mi mathvariant="normal">页</mi><mi mathvariant="normal">面</mi><mi mathvariant="normal">。</mi><mn>2</mn><mi mathvariant="normal">、</mi><mi>g</mi><mi>o</mi><mi mathvariant="normal">页</mi><mi mathvariant="normal">面</mi><mi mathvariant="normal">路</mi><mi mathvariant="normal">由</mi><mi mathvariant="normal">跳</mi><mi mathvariant="normal">转</mi><mi mathvariant="normal"> </mi><mi mathvariant="normal">，</mi><mi mathvariant="normal">前</mi><mi mathvariant="normal">进</mi><mi mathvariant="normal">或</mi><mi mathvariant="normal">者</mi><mi mathvariant="normal">后</mi><mi mathvariant="normal">退</mi><mi>t</mi><mi>h</mi><mi>i</mi><mi>s</mi><mi mathvariant="normal">.</mi></mrow><annotation encoding="application/x-tex">router.push({path:&#x27;register&#x27;,query:{plan:&#x27;123&#x27;}})，push方法其实和&lt;router-link :to=&quot;...&quot;&gt;是等同的。
-注意：push方法的跳转会向 history 栈添加一个新的记录，
-当我们点击浏览器的返回按钮时可以看到之前的页面。
-2、go
-页面路由跳转 ，前进或者后退this.</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.001892em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord mathdefault">o</span><span class="mord mathdefault">u</span><span class="mord mathdefault">t</span><span class="mord mathdefault">e</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord">.</span><span class="mord mathdefault">p</span><span class="mord mathdefault">u</span><span class="mord mathdefault">s</span><span class="mord mathdefault">h</span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault">p</span><span class="mord mathdefault">a</span><span class="mord mathdefault">t</span><span class="mord mathdefault">h</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel"><span class="mrel">:</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.751892em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">′</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord mathdefault">e</span><span class="mord mathdefault" style="margin-right:0.03588em;">g</span><span class="mord mathdefault">i</span><span class="mord mathdefault">s</span><span class="mord mathdefault">t</span><span class="mord mathdefault">e</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.751892em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">′</span></span></span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault" style="margin-right:0.03588em;">q</span><span class="mord mathdefault">u</span><span class="mord mathdefault">e</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">:</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mord"><span class="mord mathdefault">p</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">a</span><span class="mord mathdefault">n</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel"><span class="mrel">:</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.751892em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">′</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mord">1</span><span class="mord">2</span><span class="mord"><span class="mord">3</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.751892em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">′</span></span></span></span></span></span></span></span></span></span></span><span class="mclose">)</span><span class="mord cjk_fallback">，</span><span class="mord mathdefault">p</span><span class="mord mathdefault">u</span><span class="mord mathdefault">s</span><span class="mord mathdefault">h</span><span class="mord cjk_fallback">方</span><span class="mord cjk_fallback">法</span><span class="mord cjk_fallback">其</span><span class="mord cjk_fallback">实</span><span class="mord cjk_fallback">和</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.69841em;vertical-align:-0.08333em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord mathdefault">o</span><span class="mord mathdefault">u</span><span class="mord mathdefault">t</span><span class="mord mathdefault">e</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">i</span><span class="mord mathdefault">n</span><span class="mord mathdefault" style="margin-right:0.03148em;">k</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">:</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.61508em;vertical-align:0em;"></span><span class="mord mathdefault">t</span><span class="mord mathdefault">o</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.73354em;vertical-align:-0.0391em;"></span><span class="mord">&quot;</span><span class="mord">.</span><span class="mord">.</span><span class="mord">.</span><span class="mord">&quot;</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">&gt;</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord cjk_fallback">是</span><span class="mord cjk_fallback">等</span><span class="mord cjk_fallback">同</span><span class="mord cjk_fallback">的</span><span class="mord cjk_fallback">。</span><span class="mord cjk_fallback">注</span><span class="mord cjk_fallback">意</span><span class="mord cjk_fallback">：</span><span class="mord mathdefault">p</span><span class="mord mathdefault">u</span><span class="mord mathdefault">s</span><span class="mord mathdefault">h</span><span class="mord cjk_fallback">方</span><span class="mord cjk_fallback">法</span><span class="mord cjk_fallback">的</span><span class="mord cjk_fallback">跳</span><span class="mord cjk_fallback">转</span><span class="mord cjk_fallback">会</span><span class="mord cjk_fallback">向</span><span class="mord mathdefault">h</span><span class="mord mathdefault">i</span><span class="mord mathdefault">s</span><span class="mord mathdefault">t</span><span class="mord mathdefault">o</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="mord cjk_fallback">栈</span><span class="mord cjk_fallback">添</span><span class="mord cjk_fallback">加</span><span class="mord cjk_fallback">一</span><span class="mord cjk_fallback">个</span><span class="mord cjk_fallback">新</span><span class="mord cjk_fallback">的</span><span class="mord cjk_fallback">记</span><span class="mord cjk_fallback">录</span><span class="mord cjk_fallback">，</span><span class="mord cjk_fallback">当</span><span class="mord cjk_fallback">我</span><span class="mord cjk_fallback">们</span><span class="mord cjk_fallback">点</span><span class="mord cjk_fallback">击</span><span class="mord cjk_fallback">浏</span><span class="mord cjk_fallback">览</span><span class="mord cjk_fallback">器</span><span class="mord cjk_fallback">的</span><span class="mord cjk_fallback">返</span><span class="mord cjk_fallback">回</span><span class="mord cjk_fallback">按</span><span class="mord cjk_fallback">钮</span><span class="mord cjk_fallback">时</span><span class="mord cjk_fallback">可</span><span class="mord cjk_fallback">以</span><span class="mord cjk_fallback">看</span><span class="mord cjk_fallback">到</span><span class="mord cjk_fallback">之</span><span class="mord cjk_fallback">前</span><span class="mord cjk_fallback">的</span><span class="mord cjk_fallback">页</span><span class="mord cjk_fallback">面</span><span class="mord cjk_fallback">。</span><span class="mord">2</span><span class="mord cjk_fallback">、</span><span class="mord mathdefault" style="margin-right:0.03588em;">g</span><span class="mord mathdefault">o</span><span class="mord cjk_fallback">页</span><span class="mord cjk_fallback">面</span><span class="mord cjk_fallback">路</span><span class="mord cjk_fallback">由</span><span class="mord cjk_fallback">跳</span><span class="mord cjk_fallback">转</span><span class="mord"> </span><span class="mord cjk_fallback">，</span><span class="mord cjk_fallback">前</span><span class="mord cjk_fallback">进</span><span class="mord cjk_fallback">或</span><span class="mord cjk_fallback">者</span><span class="mord cjk_fallback">后</span><span class="mord cjk_fallback">退</span><span class="mord mathdefault">t</span><span class="mord mathdefault">h</span><span class="mord mathdefault">i</span><span class="mord mathdefault">s</span><span class="mord">.</span></span></span></span>router.go(-1)  // 后退<br>
-3、replace<br>
-push方法会向 history 栈添加一个新的记录，而replace方法是替换当前的页面，不会向 history 栈添加一个新的记录。</li>
+<li>带查询参数，变成 /register?plan=123this.$router.push({path:'register',query:{plan:'123'}})，push方法其实和<router-link :to="...">是等同的。<br>
+注意：push方法的跳转会向 history 栈添加一个新的记录，<br>
+当我们点击浏览器的返回按钮时可以看到之前的页面。</li>
 </ul>
+<ol start="2">
+<li>go<br>
+页面路由跳转 ，前进或者后退this.$router.go(-1)  // 后退</li>
+<li>replace<br>
+push方法会向 history 栈添加一个新的记录，而replace方法是替换当前的页面，不会向 history 栈添加一个新的记录。</li>
+</ol>
 
             </div>
           </article>
@@ -292,7 +298,7 @@ push方法会向 history 栈添加一个新的记录，而replace方法是替换
 
       <div class="sm-12 md-4 col sidebar">
   <div class="paper info-container">
-    <img src="https://xxliud.github.io/images/avatar.png?v=1593688456180" class="no-responsive avatar">
+    <img src="https://xxliud.github.io/images/avatar.png?v=1593688507547" class="no-responsive avatar">
     <div class="text-muted">念念不忘，必有回响</div>
     <div class="social-container">
       
@@ -390,7 +396,7 @@ push方法会向 history 栈添加一个新的记录，而replace方法是替换
     </div>
     <div class="row">
       
-        <a href="https://xxliud.github.io/tag/tB284FGAZ/" class="badge warning">
+        <a href="https://xxliud.github.io/tag/tB284FGAZ/" class="badge secondary">
           vue
         </a>
       
@@ -398,7 +404,7 @@ push方法会向 history 栈添加一个新的记录，而replace方法是替换
           router
         </a>
       
-        <a href="https://xxliud.github.io/tag/PW7o1lC6Ky/" class="badge success">
+        <a href="https://xxliud.github.io/tag/PW7o1lC6Ky/" class="badge ">
           route
         </a>
       
@@ -410,11 +416,11 @@ push方法会向 history 栈添加一个新的记录，而replace方法是替换
           store
         </a>
       
-        <a href="https://xxliud.github.io/tag/guz4RVyTI/" class="badge secondary">
+        <a href="https://xxliud.github.io/tag/guz4RVyTI/" class="badge success">
           gray
         </a>
       
-        <a href="https://xxliud.github.io/tag/7_qXOjqqva/" class="badge success">
+        <a href="https://xxliud.github.io/tag/7_qXOjqqva/" class="badge secondary">
           kubernetes
         </a>
       
@@ -426,7 +432,7 @@ push方法会向 history 栈添加一个新的记录，而replace方法是替换
           blue
         </a>
       
-        <a href="https://xxliud.github.io/tag/NmrxowzWRm/" class="badge warning">
+        <a href="https://xxliud.github.io/tag/NmrxowzWRm/" class="badge secondary">
           green
         </a>
       
@@ -438,7 +444,7 @@ push方法会向 history 栈添加一个新的记录，而replace方法是替换
           kafka
         </a>
       
-        <a href="https://xxliud.github.io/tag/v-M3DeXz83/" class="badge ">
+        <a href="https://xxliud.github.io/tag/v-M3DeXz83/" class="badge secondary">
           zookerper
         </a>
       
@@ -450,11 +456,11 @@ push方法会向 history 栈添加一个新的记录，而replace方法是替换
           docker
         </a>
       
-        <a href="https://xxliud.github.io/tag/HY3-GaR6fe/" class="badge success">
+        <a href="https://xxliud.github.io/tag/HY3-GaR6fe/" class="badge warning">
           istio
         </a>
       
-        <a href="https://xxliud.github.io/tag/6PcdngTdA/" class="badge ">
+        <a href="https://xxliud.github.io/tag/6PcdngTdA/" class="badge secondary">
           minikube
         </a>
       
